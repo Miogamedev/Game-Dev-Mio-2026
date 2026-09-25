@@ -1,1 +1,35 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tla07-decision-by-Mio.html</title>
+    <style>
+        b { color: blue; }
+    </style>
+</head>
+<body>
+<h2 align="center">tla07-decision-by-Mio.html</h2>
+<h4>Example working code</h4>
+<input id="myNum01" type="number" value="4"><br><br>
+<input type="button" value="Simple if Statement for Decision Making" onclick="
+    let myIn01 = parseFloat(document.getElementById('myNum01').value)
+    if (myIn01 >= 3) {
+        document.getElementById('myDiv01').innerHTML = myIn01 + ' is greater than 3'
+<br><br>
+<input type="button" value="if...else" onclick="
+    let myIn01 = parseFloat(document.getElementById('myNum01').value)
+    if (myIn01 >= 3) {
+        document.getElementById('myDiv01').innerHTML = myIn01 + ' is greater than 3'
+    } else {
+        document.getElementById('myDiv01').innerHTML = myIn01 + ' is less than 3'
+<br><br>
+<input type="button" value="Complex if" onclick="
+    let myIn01 = parseFloat(document.getElementById('myNum01').value)
+    if ((myIn01 != 3 || myIn01 > -3) && myIn01 <= 100) {
+        document.getElementById('myDiv01').innerHTML = myIn01 + ' is complex'
+    } else {
+        document.getElementById('myDiv01').innerHTML = myIn01 + ' is not complex'
+<br><br>
+div id="myDiv01">...</div>
+</body>
+</html>
