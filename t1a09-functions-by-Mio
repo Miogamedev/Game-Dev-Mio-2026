@@ -1,1 +1,27 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>t1a09-functions-by-Mio</title>
+</head>
+<body>
+<script>
+function myExampleFunction() {
+let myIn01 = parseInt(document.getElementById('myText01').value);
+let mySum = myIn01 + myIn01;
+let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+</script>
+<h2 align="center">t1a09-functions-by-Mio.html</h2>
+<a href="https://www.w3schools.com/js/js_functions.asp">
+</a>
+<br><br>
+<input type="text" id="myText01" value="3">
+<br><br>
+<input
+type="button"
+value="Function Example"
+onclick="document.getElementById('myDiv01').innerHTML = myExampleFunction()"
+<br><br>
+<div id="myDiv01">...</div>
+</body>
+</html>
