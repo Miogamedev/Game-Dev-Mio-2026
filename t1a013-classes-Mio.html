@@ -1,1 +1,44 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t1a13-Classes-Mio</title>
+    <meta charset="UTF-8">
+</head>
 
+<body>
+
+    <h2 align="center">t1a13-Classes-Mio.html</h2>
+
+    <a href="https://www.w3schools.com/js/js_classes.asp">Find a good reference to JavaScript Classes</a>
+    <br>
+
+    Nothing:
+    <input type="text" id="myText01" value="Useless at the moment">
+    <br>
+
+    <input type="button" value="Example Class Set and Show Class Animal" onclick="{
+
+        class myAnimal {
+            constructor(passName, passAge) {
+                this.myName = passName;
+                this.myAge = passAge;
+            }
+
+            myShow() {
+                document.getElementById('myDiv01').innerHTML =
+                    'Hello ' + this.myName + '. You are ' +
+                    this.myAge + ' years old<br>';
+            }
+        }
+
+        let myDog = new myAnimal('Snickers', 5);
+        myDog.myShow();
+
+    }">
+
+    <div id="myDiv01">...</div>
+
+</body>
+</html>
+```
