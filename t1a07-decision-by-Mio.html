@@ -1,26 +1,146 @@
- <title>tla07-decision-by-Mio.html</title>
- <style>
- b { color: blue; }  </style>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t1a07-decision-by-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        a { color: #00ffff; }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 700px;
+            box-shadow: 0 0 12px #00ffcc;
+        }
+
+        input[type=number] {
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        input[type=button] {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover {
+            background: #66ff66;
+        }
+
+        #myDiv01 {
+            color: #00ffcc;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-<h2 align="center">tla07-decision-by-Mio.html</h2>
-<input id="myNum01" type="number" value="4"><br><br>
-<input type="button" value="Simple if Statement for Decision Making" onclick="
-  let myIn01 = parseFloat(document.getElementById('myNum01').value)
-  if (myIn01 >= 3) {
- document.getElementById('myDiv01').innerHTML = myIn01 + ' is greater than 3'
-<br><br>
-<input type="button" value="if...else" onclick="
-  let myIn01 = parseFloat(document.getElementById('myNum01').value)
- if (myIn01 >= 3) { document.getElementById('myDiv01').innerHTML = myIn01 + ' is greater than 3'
- document.getElementById('myDiv01').innerHTML = myIn01 + ' is less than 3'
-<br><br>
-<input type="button" value="Complex if" onclick="
-  let myIn01 = parseFloat(document.getElementById('myNum01').value)
- if ((myIn01 != 3 || myIn01 > -3) && myIn01 <= 100) {
- document.getElementById('myDiv01').innerHTML = myIn01 + ' is complex'
-  document.getElementById('myDiv01').innerHTML = myIn01 + ' is not complex'
-<br><br>
-div id="myDiv01">...</div>
+
+<h6>Version 0.0.1</h6>
+
+<h1>T1A07 Decision Making by Mio</h1>
+
+<div class="box">
+    <h2>Reference Link</h2>
+
+    <a href="https://www.w3schools.com/js/js_if_else.asp">
+        Good reference to Decisions if...else statements
+        Javascript innerHTML value by Mio
+    </a>
+
+    <br><br>
+
+    Note: ! = Not, && = AND, || = OR
+</div>
+
+<div class="box">
+    <h2>Example input output code</h2>
+
+    <pre>
+let myHour = 20
+
+if (myHour < 18) {
+    let myGreeting = 'Good day';
+}
+    </pre>
+</div>
+
+<div class="box">
+    <h2>Example working code</h2>
+
+    Enter a number:
+
+    <input id="myNum01" type="number" value="4">
+
+    <br><br>
+
+    <input type="button" value="Simple if Statement"
+    onclick="
+        let myIn01 = parseFloat(document.getElementById('myNum01').value);
+        if (myIn01 >= 3) {
+            document.getElementById('myDiv01').innerHTML =
+            myIn01 + ' is greater than or equal to 3';
+        }
+    ">
+
+    <br>
+
+    <input type="button" value="if...else"
+    onclick="
+        let myIn01 = parseFloat(document.getElementById('myNum01').value);
+        if (myIn01 >= 3) {
+            document.getElementById('myDiv01').innerHTML =
+            myIn01 + ' is greater than or equal to 3';
+        } else {
+            document.getElementById('myDiv01').innerHTML =
+            myIn01 + ' is less than 3';
+        }
+    ">
+
+    <br>
+
+    <input type="button" value="Complex if"
+    onclick="
+        let myIn01 = parseFloat(document.getElementById('myNum01').value);
+        if (myIn01 != 3 && myIn01 > -3 && myIn01 <= 100) {
+            document.getElementById('myDiv01').innerHTML =
+            myIn01 + ' is complex';
+        } else {
+            document.getElementById('myDiv01').innerHTML =
+            myIn01 + ' is not complex';
+        }
+    ">
+
+    <div id="myDiv01">
+        Your answer will appear here!
+    </div>
+</div>
+
+<h6>End of T1A07 Decision Making - Mio</h6>
+
 </body>
 </html>
