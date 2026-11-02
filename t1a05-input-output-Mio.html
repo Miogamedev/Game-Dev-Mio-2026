@@ -1,13 +1,123 @@
-<h2 align="center">t1a05-input output by Mio.html</h2>
-<a href="https://www.w3schools.com/jsref/prop_html_innerhtml.asp">
-<pre>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>T1A05 Input Output by Mio</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 650px;
+            box-shadow: 0 0 12px #00ffcc;
+        }
+
+        input[type=number] {
+            padding: 10px;
+            border-radius: 8px;
+            width: 100px;
+        }
+
+        input[type=button] {
+            background: #00ffcc;
+            color: #101030;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover {
+            background: #66ff66;
+            box-shadow: 0 0 12px #66ff66;
+        }
+
+        a {
+            color: #00ffff;
+        }
+
+        #myDiv01 {
+            background: #101030;
+            border: 1px solid #00ffcc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            color: #00ffcc;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h6>Version 0.0.1</h6>
+
+<h1 align="center">T1A05 Input Output by Mio</h1>
+
+<div class="box">
+
+    <h2>Reference Link</h2>
+
+    <a href="https://www.w3schools.com/jsref/prop_html_innerhtml.asp">
+        Good reference to input output Javascript innerHTML value by Mio
+    </a>
+
+</div>
+
+<div class="box">
+
+    <h2>Example input output code</h2>
+
+    <pre>
 myIn01 = document.getElementById('myNum01').value
 document.getElementById('myDiv01').innerHTML = 'Hi'
-</pre>
-<h4>Example working code</h4>
-<input id="myNum01" type="number" value="4"><br>
-<input type="button" value="myEvent squares" onclick="{
-  let myIn01 = parseFloat(document.getElementById('myNum01').value)
-  let myAnswer = myIn01 * myIn01
-  document.getElementById('myDiv01').innerHTML = myIn01 + ' squared = ' + myAnswer
-<div id="myDiv01">...</div>
+    </pre>
+
+</div>
+
+<div class="box">
+
+    <h2>Example working code</h2>
+
+    Enter a number:
+
+    <input id="myNum01" type="number" value="4">
+
+    <br><br>
+
+    <input type="button" value="myEvent squares"
+    onclick="
+        let myIn01 = parseFloat(document.getElementById('myNum01').value);
+        let myAnswer = myIn01 * myIn01;
+        document.getElementById('myDiv01').innerHTML =
+        myIn01 + ' squared = ' + myAnswer;
+    ">
+
+    <br><br>
+
+    <div id="myDiv01">Your answer will appear here!</div>
+
+</div>
+
+<h6>End of T1A05 Input Output by Mio</h6>
+
+</body>
+</html>
