@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>T1A04 CSS by Mio</title>
 
@@ -14,23 +13,9 @@
             padding: 20px;
         }
 
-        h1 {
-            color: #00ffcc;
-            text-shadow: 0 0 15px #00ffcc;
-            font-size: 35px;
-        }
-
-        h2 {
-            color: #66ff66;
-        }
-
-        a {
-            color: #00ffff;
-        }
-
-        a:hover {
-            color: yellow;
-        }
+        h1 { color: #00ffcc; text-shadow: 0 0 15px #00ffcc; }
+        h2 { color: #66ff66; }
+        a { color: #00ffff; }
 
         .box {
             background: #202044;
@@ -47,31 +32,18 @@
             color: #101030;
             border: none;
             border-radius: 10px;
-            padding: 12px 20px;
+            padding: 12px;
             font-weight: bold;
             cursor: pointer;
         }
 
         button:hover, input[type=button]:hover {
             background: #66ff66;
-            box-shadow: 0 0 15px #66ff66;
         }
 
-        textarea {
-            border: 2px solid #00ffcc;
-            border-radius: 10px;
-            padding: 10px;
-        }
-
-        img {
-            border: 4px solid #00ffcc;
-            box-shadow: 0 0 20px #00ffcc;
-        }
-
-        #result {
-            color: #00ffcc;
-            font-size: 22px;
-        }
+        textarea { border: 2px solid #00ffcc; border-radius: 10px; }
+        img { border: 4px solid #00ffcc; box-shadow: 0 0 20px #00ffcc; }
+        #result { color: #00ffcc; font-size: 22px; }
     </style>
 </head>
 
@@ -79,29 +51,22 @@
 
 Version 0.0.1<br>
 
-<h1 align="center">T1A04 CSS by Fred 2023</h1>
+<h1>T1A04 CSS by Mio 2023</h1>
 
 <div class="box">
-
     <h2>Reference Link</h2>
-
     <a href="https://www.w3schools.com/cssref/default.asp">
         W3Schools CSS Reference
     </a>
-
-    <br><br>
-
-    Cascading Style Sheets (CSS) is properly done with a .css
-    file listing all CSS commands for your website.<br>
-
-    Another way to do CSS is using the style tag at the top
-    head part of a webpage.<br>
-
+    <p>
+        CSS is properly done with a .css file listing all CSS
+        commands for your website.
+    </p>
+    Another way is using the style tag in the head of a webpage.
 </div>
 
 <div class="box">
-
-    <h2>Here is typical in document style</h2>
+    <h2>Typical In-Document Style</h2>
 
     <pre>
 b {
@@ -109,104 +74,61 @@ b {
 }
     </pre>
 
-    <br>
-
-    I do CSS inline inside the tag.
-    It overpowers all other methods.
-
+    I do CSS inline inside the tag. It overpowers other methods.
     <br><br>
 
     <i>This is Italic</i>
     <br><br>
 
-    <i id="myB1"
-    style="color:#00ff00; background-color:blue;">
+    <i id="myB1" style="color:#00ff00; background-color:blue;">
         This is Italic with CSS background-color and main color
     </i>
-
     <br><br>
 
     <input type="button" value="Change"
     onclick="
-        document.getElementById('myB1').style.color = 'red';
-        document.getElementById('myB1').style.backgroundColor = 'yellow';
+        document.getElementById('myB1').style.color='red';
+        document.getElementById('myB1').style.backgroundColor='yellow';
     ">
-
-    <br><br>
-
 </div>
 
 <div class="box">
-
     <h2>Advanced CSS Textarea</h2>
 
-    <textarea
-    style="background-image: url('myImgNew.jpg');
-    position:relative;
-    left:0;
-    top:0;
-    width:300px;
-    height:100px;">
-
+    <textarea style="background-image:url('myImgNew.jpg');
+    width:300px; height:100px;">
 Advanced see if you move this textarea
-
     </textarea>
-
-    <br><br>
-
 </div>
 
-<br><br><br><br><br>
-
 <div class="box">
-
     <h2>My CSS Image</h2>
-
     <img src="myImage01.jpg" width="200"
     style="border-radius:200px;"
     alt="My CSS assignment image">
-
 </div>
 
 <div class="box">
-
     <h2>🎮 BONUS: Secret CSS Button 🎮</h2>
+    <p>Click to change the background color!</p>
 
-    <p>Click below to change the background color!</p>
-
-    <button onclick="changeBackground()">
-        CHANGE MY BACKGROUND
-    </button>
-
+    <button onclick="changeBackground()">CHANGE BACKGROUND</button>
     <p id="result">Ready for a surprise?</p>
-
 </div>
 
 <script>
-
     function changeBackground() {
-
-        let colors = [
-            "#101030",
-            "#003344",
-            "#330033",
-            "#003300",
-            "#202020",
-            "#440022"
-        ];
+        let colors = ["#101030", "#003344", "#330033",
+                      "#003300", "#202020", "#440022"];
 
         let random = Math.floor(Math.random() * colors.length);
-
         document.body.style.background = colors[random];
-
         document.getElementById("result").innerHTML =
             "🔥 BACKGROUND CHANGED! 🔥";
-
     }
-
 </script>
 
-<h6>End of T1A04 CSS Assignment - Version 0.0.1</h6>
+<h6>End of T1A04 CSS Assignment - Mio</h6>
 
 </body>
 </html>
