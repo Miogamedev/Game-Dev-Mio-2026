@@ -1,20 +1,108 @@
- <title>tla06-proper-and-variables-Mio.html</title>
-    <style>    b { color: blue; }
-   </style>
-   <script>
-   function sayHello() {
-   myNum = 3;
-  myString = ' Hello ';
-  myFloat = 17.5; myBool = true;
-  myOut = document.getElementById('myDiv01');
-  myOut.innerHTML = myNum + myString + myFloat + ', ' + myBool;
- if (myBool) {
-  myOut.innerHTML += ', WOW';
-</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>t1a06-proper-and-variables-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 12px #00ffcc;
+        }
+
+        b {
+            color: #00ffcc;
+        }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px auto;
+            max-width: 600px;
+            box-shadow: 0 0 12px #00ffcc;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #66ff66;
+            box-shadow: 0 0 15px #66ff66;
+        }
+
+        #myDiv01 {
+            color: #00ffcc;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+
+    <script>
+        function sayHello() {
+
+            let myNum = 3;
+            let myString = ' Hello ';
+            let myFloat = 17.5;
+            let myBool = true;
+
+            let myOut = document.getElementById('myDiv01');
+
+            myOut.innerHTML =
+                myNum + myString + myFloat + ', ' + myBool;
+
+            if (myBool) {
+                myOut.innerHTML += ', WOW!';
+            }
+
+        }
+    </script>
+
 </head>
+
 <body>
-<p>This is <b>bold</b> text.</p>
-<button onclick="sayHello()">Click Me</button>
-<div id="myDiv01">...</div>
+
+    <h6>Version 0.0.1</h6>
+
+    <h1>T1A06 Proper and Variables by Mio</h1>
+
+    <div class="box">
+
+        <p>This is <b>bold</b> text.</p>
+
+        <h3>JavaScript Variables</h3>
+
+        <p>Click the button to see the variables working!</p>
+
+        <button onclick="sayHello()">Click Me</button>
+
+        <div id="myDiv01">
+            Your answer will appear here!
+        </div>
+
+    </div>
+
+    <h6>End of T1A06 - Mio</h6>
+
 </body>
+
 </html>
