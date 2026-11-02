@@ -30,18 +30,16 @@
             box-shadow: 0 0 12px #00ffcc;
         }
 
-        input[type=number] {
+        input {
             padding: 10px;
             border-radius: 8px;
+            margin: 8px;
         }
 
         input[type=button] {
             background: #00ffcc;
             color: #101030;
             border: none;
-            border-radius: 8px;
-            padding: 10px;
-            margin: 8px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -55,90 +53,90 @@
             font-size: 20px;
             margin-top: 20px;
         }
+
+        pre {
+            background: #101030;
+            color: #66ffcc;
+            padding: 15px;
+            text-align: left;
+        }
     </style>
 </head>
 
 <body>
 
-<h6>Version 0.0.1</h6>
-
+<h6>Version 0.0.3</h6>
 <h1>T1A07 Decision Making by Mio</h1>
 
 <div class="box">
     <h2>Reference Link</h2>
-
-    <a href="https://www.w3schools.com/js/js_if_else.asp">
-        Good reference to Decisions if...else statements
-        Javascript innerHTML value by Mio
+    <a href="https://www.w3schools.com/js/js_if_else.asp" target="_blank">
+        JavaScript if...else Reference
     </a>
-
-    <br><br>
-
-    Note: ! = Not, && = AND, || = OR
+    <p>! = NOT, && = AND, || = OR</p>
 </div>
 
 <div class="box">
-    <h2>Example input output code</h2>
-
+    <h2>Example Input Output Code</h2>
     <pre>
-let myHour = 20
+let myHour = 20;
 
 if (myHour < 18) {
     let myGreeting = 'Good day';
+} else {
+    let myGreeting = 'Good evening';
 }
     </pre>
 </div>
 
 <div class="box">
-    <h2>Example working code</h2>
+    <h2>Example Working Code</h2>
 
-    Enter a number:
-
+    <p>Enter a number:</p>
     <input id="myNum01" type="number" value="4">
 
-    <br><br>
-
-    <input type="button" value="Simple if Statement"
-    onclick="
-        let myIn01 = parseFloat(document.getElementById('myNum01').value);
-        if (myIn01 >= 3) {
-            document.getElementById('myDiv01').innerHTML =
-            myIn01 + ' is greater than or equal to 3';
-        }
-    ">
-
     <br>
 
-    <input type="button" value="if...else"
-    onclick="
-        let myIn01 = parseFloat(document.getElementById('myNum01').value);
-        if (myIn01 >= 3) {
-            document.getElementById('myDiv01').innerHTML =
-            myIn01 + ' is greater than or equal to 3';
-        } else {
-            document.getElementById('myDiv01').innerHTML =
-            myIn01 + ' is less than 3';
-        }
-    ">
+    <input type="button" value="Simple if" onclick="check(1)">
+    <input type="button" value="if...else" onclick="check(2)">
+    <input type="button" value="Complex if" onclick="check(3)">
+    <input type="button" value="Reset" onclick="resetAnswer()">
 
-    <br>
-
-    <input type="button" value="Complex if"
-    onclick="
-        let myIn01 = parseFloat(document.getElementById('myNum01').value);
-        if (myIn01 != 3 && myIn01 > -3 && myIn01 <= 100) {
-            document.getElementById('myDiv01').innerHTML =
-            myIn01 + ' is complex';
-        } else {
-            document.getElementById('myDiv01').innerHTML =
-            myIn01 + ' is not complex';
-        }
-    ">
-
-    <div id="myDiv01">
-        Your answer will appear here!
-    </div>
+    <div id="myDiv01">Your answer will appear here!</div>
 </div>
+
+<script>
+function check(type) {
+    let num = document.getElementById('myNum01').value;
+    let result = document.getElementById('myDiv01');
+
+    if (num.trim() === '') {
+        result.innerHTML = 'Please enter a number!';
+        return;
+    }
+
+    num = Number(num);
+
+    if (type === 1) {
+        result.innerHTML = num >= 3 ? num + ' is greater than or equal to 3' : 'Try a number 3 or higher!';
+    }
+
+    if (type === 2) {
+        result.innerHTML = num >= 3 ? num + ' is greater than or equal to 3' : num + ' is less than 3';
+    }
+
+    if (type === 3) {
+        result.innerHTML = num != 3 && num > -3 && num <= 100
+            ? num + ' is complex!'
+            : num + ' is not complex.';
+    }
+}
+
+function resetAnswer() {
+    document.getElementById('myNum01').value = 4;
+    document.getElementById('myDiv01').innerHTML = 'Your answer will appear here!';
+}
+</script>
 
 <h6>End of T1A07 Decision Making - Mio</h6>
 
