@@ -1,52 +1,207 @@
-<h6>Version 0.0.1.</h6>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t1a03-forms-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px #00ffcc;
+        }
+
+        h3 {
+            color: #66ff66;
+        }
+
+        form {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 20px #00ffcc;
+            text-align: left;
+        }
+
+        input, select, textarea {
+            margin: 8px;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        input[type="button"],
+        input[type="submit"],
+        input[type="reset"],
+        button {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover,
+        button:hover {
+            background: #66ff66;
+            box-shadow: 0 0 15px #66ff66;
+        }
+
+        textarea {
+            width: 90%;
+            background: #eeeeff;
+        }
+
+        .cool-box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        #result {
+            color: #00ffcc;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h6>Version 0.0.1</h6>
+
 <h1 align="center">t1a03-forms-Mio.html</h1>
-  <font color="green">
-    Proving that you can use: Forms 2026
-  </font>
-</h3>
-The following are all form elements (add to them):<br>
+
+<h3><font color="green">Proving that you can use: Forms 2023</font></h3>
+<br>
+
+<div class="cool-box">
+    <h2>⭐ Welcome to My Forms Assignment! ⭐</h2>
+    <p>Try out all the different form elements below!</p>
+</div>
+
+The following are all form elements (add to them):
+<br>
+
 <form>
-First Name: Mio
-<input type="text" id="myText01" value="Mio">
-<br>
-Beef:
-<input type="checkbox">
-<br>
-Veggy:
-<input type="checkbox">
-<br>
-95.4
-<input type="radio" name="myRad01" value="">
-<br>
-<input type="radio" name="myRad01" value="">
-<br><br>
-hidden:
-<input type="hidden">
-<br>
-<input type="file">
-<br>
-reset:
-<input type="reset">
-<br>
-Submit:
-<input type="submit">
-<br>
-Button:
-<input
-  type="button"
-  value="click"
-  onclick=" document.getElementById('myArea01').value = 'Cool'
-Textarea:<br>
-<textarea id="myArea01" cols="60" rows="5">Cool this works</textarea>
-<br><br>
-Select Box:<br>
-<select
-  id="mySelect01"
-  size="2"
-    document.getElementById('myArea01').value =
-    document.getElementById('mySelect01').value
-<option value="myDog">Dog</option>
-<option value="myCat">Cat</option>
-<option value="myMouse">Mouse</option>
-</select>
+
+    First Name:
+    <input type="text" id="myText01" value="Fred">
+    <br>
+
+    Checkbox:
+    <br>
+
+    Beef:
+    <input type="checkbox">
+    <br>
+
+    Veggy:
+    <input type="checkbox">
+    <br>
+
+    Radio Buttons:
+    <br>
+
+    95.4
+    <input type="radio" name="myRad01" value="95.4">
+    <br>
+
+    101
+    <input type="radio" name="myRad01" value="101">
+    <br>
+
+    Hidden:
+    <input type="hidden">
+    <br>
+
+    File:
+    <input type="file">
+    <br>
+
+    Reset:
+    <input type="reset">
+    <br>
+
+    Submit (advanced):
+    <input type="submit">
+    <br>
+
+    Button:
+    <input type="button" value="Click"
+    onclick="document.getElementById('myArea01').value = 'Cool'">
+    <br>
+
+    Textarea:
+    <br>
+
+    <textarea id="myArea01" cols="60" rows="5">Cool this works</textarea>
+    <br>
+
+    Select Box:
+    <br>
+
+    <select id="mySelect01" size="2"
+    onchange="document.getElementById('myArea01').value =
+    document.getElementById('mySelect01').value">
+
+        <option value="myDog">Dog</option>
+        <option value="myCat">Cat</option>
+        <option value="myMouse">Mouse</option>
+
+    </select>
+
 </form>
+
+<div class="cool-box">
+
+    <h2>🎮 BONUS: Random Surprise Generator 🎮</h2>
+
+    <p>Click the button for a random message!</p>
+
+    <button type="button" onclick="randomMessage()">
+        SURPRISE ME!
+    </button>
+
+    <p id="result">Your surprise is waiting...</p>
+
+</div>
+
+<script>
+    function randomMessage() {
+
+        let messages = [
+            "🚀 YOU ARE AWESOME!",
+            "⭐ LEVEL UP!",
+            "🔥 THAT WAS COOL!",
+            "🎮 CODING CHAMPION!",
+            "💎 LEGENDARY!",
+            "🌟 KEEP CODING!"
+        ];
+
+        let number = Math.floor(Math.random() * messages.length);
+
+        document.getElementById("result").innerHTML =
+            messages[number];
+    }
+</script>
+
+<h6>My Forms Assignment - Version 0.0.1</h6>
+
+</body>
+</html>
