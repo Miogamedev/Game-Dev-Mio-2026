@@ -1,39 +1,158 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>t1a08-loops-by-Mio</title>
+    <title>t1a08-loops-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        a { color: #00ffff; }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 700px;
+            box-shadow: 0 0 12px #00ffcc;
+        }
+
+        input {
+            padding: 10px;
+            margin: 8px;
+            border-radius: 8px;
+        }
+
+        input[type=button] {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover {
+            background: #66ff66;
+        }
+
+        #myDiv01 {
+            color: #00ffcc;
+            font-size: 18px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+    </style>
 </head>
-<body> <h2 align="center">t1a08-loops-by-Mio.html</h2>
-<pre>
-for (let myLoop = 0; myLoop < myMax; myLoop++) 
-</pre> Max loops:
-<input id="myNum01" type="number" value="4"> <br>
-Weird number:
-<input id="myWeird" type="number" value="2">
-<br><br>
-<input
-type="button"
-onclick="
-document.getElementById('myDiv01').innerHTML 
-let myMax = parseInt(document.getElementById('myNum01').value);
+
+<body>
+
+<h6>Version 0.0.1</h6>
+
+<h1>T1A08 Loops by Mio</h1>
+
+<div class="box">
+    <h2>Reference Link</h2>
+
+    <a href="https://www.w3schools.com/js/js_loop_for.asp">
+        Good reference to Javascript Loops
+    </a>
+
+    <h3>Example input output code</h3>
+
+    <pre>
 for (let myLoop = 0; myLoop < myMax; myLoop++) {
-if (myLoop * 2 > myMax) 
-myTemp += ' cool           
-myTemp += 'Loop number: ' + myLoop + '<br>';          
-document.getElementById('myDiv01').innerHTML = myTemp;
-<br><br>
-<input
-type="button"
-value="Even number identifier"
-onclick="
-document.getElementById('myDiv01').innerHTML = '';
-let myMax = parseInt(document.getElementById('myNum01').value);
-for (let myLoop = 0; myLoop < myMax; myLoop++) {
-if (myLoop % 2 == 0)                            
-myTemp += 'Loop number: ' + myLoop + '<br>';            
-document.getElementById('myDiv01').innerHTML = myTemp;
-<br><br>
-<div id="myDiv01">
-<font color="red">...</font>
+    // your code here
+}
+    </pre>
+</div>
+
+<div class="box">
+    <h2>Example Working Code</h2>
+
+    Max loops:
+    <input id="myNum01" type="number" value="4" min="0" max="100">
+    <br>
+
+    Weird number:
+    <input id="myWeird" type="number" value="2">
+    <br><br>
+
+    <input type="button" value="Basic For Loop with Decisions"
+    onclick="
+        let myTemp = '';
+        let myMax = parseInt(document.getElementById('myNum01').value);
+
+        for (let myLoop = 0; myLoop < myMax; myLoop++) {
+            if (myLoop * 2 > myMax) {
+                myTemp += 'Cool! ';
+            }
+            myTemp += 'Loop number: ' + myLoop + '<br>';
+        }
+
+        document.getElementById('myDiv01').innerHTML = myTemp;
+    ">
+
+    <br>
+
+    <input type="button" value="Even Number Identifier"
+    onclick="
+        let myTemp = '';
+        let myMax = parseInt(document.getElementById('myNum01').value);
+
+        for (let myLoop = 0; myLoop < myMax; myLoop++) {
+            if (myLoop % 2 == 0) {
+                myTemp += 'Even Number, ';
+            }
+            myTemp += 'Loop number: ' + myLoop + '<br>';
+        }
+
+        document.getElementById('myDiv01').innerHTML = myTemp;
+    ">
+
+    <div id="myDiv01">
+        Your loop results will appear here!
+    </div>
+</div>
+
+<div class="box">
+    <h2>⭐ Bonus: Loop Challenge ⭐</h2>
+
+    <p>Find the multiples of your weird number!</p>
+
+    <input type="button" value="Start Challenge"
+    onclick="
+        let max = parseInt(document.getElementById('myNum01').value);
+        let weird = parseInt(document.getElementById('myWeird').value);
+        let result = '';
+
+        if (weird > 0 && max >= 0) {
+            for (let i = 0; i < max; i++) {
+                if (i % weird == 0) {
+                    result += i + ' is a multiple!<br>';
+                }
+            }
+        } else {
+            result = 'Enter a positive weird number!';
+        }
+
+        document.getElementById('myDiv01').innerHTML = result;
+    ">
+</div>
+
+<h6>End of T1A08 Loops Assignment - Mio</h6>
+
+</body>
+</html>
