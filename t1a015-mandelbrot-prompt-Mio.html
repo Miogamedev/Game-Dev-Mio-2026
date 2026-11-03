@@ -2,126 +2,392 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>t1a015-Mandelbrot-prompt-Mio.html</title>
-<style>
-body { margin:0; background:black; color:white; font-family:Arial; overflow:hidden; }
-canvas { display:block; }
-h2 { position:fixed; top:5px; width:100%; text-align:center; color:cyan; text-shadow:0 0 15px blue; pointer-events:none; }
-#myZoom { position:fixed; top:55px; left:15px; color:magenta; }
-#myHint { position:fixed; top:15px; left:15px; }
-#myButtons { position:fixed; bottom:15px; left:50%; transform:translateX(-50%); white-space:nowrap; }
-button { padding:10px; background:#101030; color:cyan; border:1px solid cyan; border-radius:8px; cursor:pointer; }
-#myModal { display:none; position:fixed; z-index:5; top:35%; left:10%; width:80%; padding:20px; box-sizing:border-box; text-align:center; background:#101030; border:2px solid cyan; border-radius:15px; }
-</style>
+    <title>t1a015-Mandelbrot-prompt-Mio.html</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: black;
+            color: white;
+            font-family: Arial;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #myCanvas {
+            z-index: 1;
+        }
+
+        #myOverlay {
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        h2 {
+            position: fixed;
+            top: 5px;
+            width: 100%;
+            text-align: center;
+            color: cyan;
+            text-shadow: 0 0 15px blue;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        #myZoom {
+            position: fixed;
+            top: 55px;
+            left: 15px;
+            color: magenta;
+            z-index: 4;
+        }
+
+        #myHint {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 5;
+        }
+
+        #myButtons {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 4;
+        }
+
+        button {
+            padding: 10px;
+            margin: 3px;
+            background: #101030;
+            color: cyan;
+            border: 1px solid cyan;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #004455;
+            box-shadow: 0 0 12px cyan;
+        }
+
+        #myModal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            top: 35%;
+            left: 10%;
+            width: 80%;
+            padding: 20px;
+            text-align: center;
+            background: #101030;
+            border: 2px solid cyan;
+            border-radius: 15px;
+        }
+
+        #myModal h3 {
+            color: cyan;
+        }
+    </style>
 </head>
+
 <body>
 
 <h2>Mandelbrot Fractal by Mio</h2>
+
 <div id="myZoom">Zoom: 1x</div>
+
 <button id="myHint" onclick="myInfo()">💡 Info</button>
 
 <div id="myModal">
-<h2>About the Fractal</h2>
-<p>Made using Z(n+1) = Z(n)² + C.</p>
-<p>Move your mouse to preview, click to zoom, and scroll to resize the box.</p>
-<button onclick="myInfo()">Close</button>
+    <h3>About the Fractal</h3>
+
+    <p>Made using Z(n+1) = Z(n)² + C.</p>
+
+    <p>Move your mouse to preview the zoom area.</p>
+
+    <p>Click to zoom in and use the buttons to control the fractal.</p>
+
+    <button onclick="myInfo()">Close</button>
 </div>
 
 <div id="myButtons">
-<button onclick="myZoomIn()">Zoom In</button>
-<button onclick="myZoomOut()">Zoom Out</button>
-<button onclick="myReset()">Reset</button>
+    <button onclick="myZoomIn()">Zoom In</button>
+    <button onclick="myZoomOut()">Zoom Out</button>
+    <button onclick="myReset()">Reset</button>
 </div>
 
 <canvas id="myCanvas"></canvas>
+<canvas id="myOverlay"></canvas>
 
 <script>
-let myCanvas=document.getElementById("myCanvas"), myCtx=myCanvas.getContext("2d");
-let myX=-0.5, myY=0, mySize=3.5, myPreview=0.25;
-let myMouseX=0, myMouseY=0, myInside=false, myToken=0;
 
-function myResize(){
-myCanvas.width=innerWidth; myCanvas.height=innerHeight; myDraw();
-}
+let myCanvas = document.getElementById("myCanvas");
+let myCtx = myCanvas.getContext("2d");
 
-async function myDraw(){
-let myID=++myToken, w=myCanvas.width, h=myCanvas.height;
-let img=myCtx.createImageData(w,h), d=img.data;
-let max=120, height=mySize*h/w;
+let myOverlay = document.getElementById("myOverlay");
+let myOverlayCtx = myOverlay.getContext("2d");
 
-for(let y=0;y<h;y++){
-if(myID!==myToken)return;
-for(let x=0;x<w;x++){
-let a=myX+(x/w-.5)*mySize, b=myY+(y/h-.5)*height;
-let r=0,i=0,n=0;
-while(r*r+i*i<256 && n<max){
-let t=r*r-i*i+a; i=2*r*i+b; r=t; n++;
-}
-let k=(y*w+x)*4, c=n*0.12;
-d[k]=n===max?0:128+127*Math.sin(c);
-d[k+1]=n===max?0:128+127*Math.sin(c+2);
-d[k+2]=n===max?0:128+127*Math.sin(c+4);
-d[k+3]=255;
-}
-if(y%15===0) await new Promise(resolve=>setTimeout(resolve,0));
-}
-if(myID===myToken)myCtx.putImageData(img,0,0);
-document.getElementById("myZoom").innerText="Zoom: "+(3.5/mySize).toFixed(2)+"x";
-myPreviewBox();
-}
+let myX = -0.5;
+let myY = 0;
+let mySize = 3.5;
+let myPreview = 0.25;
 
-function myPreviewBox(){
-myDrawPreview();
+let myMouseX = 0;
+let myMouseY = 0;
+let myInside = false;
+
+let myToken = 0;
+
+let myScale = 1;
+
+// Resize the canvas
+function myResize() {
+
+    myScale = Math.min(1, 900 / window.innerWidth);
+
+    myCanvas.width = Math.max(1, Math.floor(window.innerWidth * myScale));
+    myCanvas.height = Math.max(1, Math.floor(window.innerHeight * myScale));
+
+    myOverlay.width = myCanvas.width;
+    myOverlay.height = myCanvas.height;
+
+    myDraw();
 }
 
-function myDrawPreview(){
-if(!myInside)return;
-let w=myCanvas.width*myPreview, h=myCanvas.height*myPreview;
-let x=Math.max(0,Math.min(myCanvas.width-w,myMouseX-w/2));
-let y=Math.max(0,Math.min(myCanvas.height-h,myMouseY-h/2));
-myCtx.save();
-myCtx.setLineDash([8,6]);
-myCtx.strokeStyle="cyan";
-myCtx.lineWidth=3;
-myCtx.shadowBlur=12;
-myCtx.shadowColor="cyan";
-myCtx.strokeRect(x,y,w,h);
-myCtx.restore();
+// Draw the Mandelbrot fractal
+async function myDraw() {
+
+    let myID = ++myToken;
+
+    let w = myCanvas.width;
+    let h = myCanvas.height;
+
+    let img = myCtx.createImageData(w, h);
+    let d = img.data;
+
+    let max = 100;
+
+    let height = mySize * h / w;
+
+    for (let y = 0; y < h; y++) {
+
+        if (myID !== myToken) return;
+
+        for (let x = 0; x < w; x++) {
+
+            let a = myX + (x / w - 0.5) * mySize;
+            let b = myY + (y / h - 0.5) * height;
+
+            let r = 0;
+            let i = 0;
+            let n = 0;
+
+            while (r * r + i * i < 256 && n < max) {
+
+                let t = r * r - i * i + a;
+
+                i = 2 * r * i + b;
+                r = t;
+
+                n++;
+            }
+
+            let k = (y * w + x) * 4;
+
+            if (n === max) {
+
+                d[k] = 0;
+                d[k + 1] = 0;
+                d[k + 2] = 0;
+
+            } else {
+
+                let c = n * 0.12;
+
+                d[k] = 128 + 127 * Math.sin(c);
+                d[k + 1] = 128 + 127 * Math.sin(c + 2);
+                d[k + 2] = 128 + 127 * Math.sin(c + 4);
+
+            }
+
+            d[k + 3] = 255;
+        }
+
+        // Let the browser update while drawing
+        if (y % 10 === 0) {
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
+    }
+
+    if (myID !== myToken) return;
+
+    myCtx.putImageData(img, 0, 0);
+
+    document.getElementById("myZoom").innerText =
+        "Zoom: " + (3.5 / mySize).toFixed(2) + "x";
+
+    myDrawPreview();
 }
 
-myCanvas.onmousemove=e=>{
-myMouseX=e.offsetX; myMouseY=e.offsetY;
-myInside=true; myDrawPreview();
+// Draw the zoom preview box
+function myDrawPreview() {
+
+    myOverlayCtx.clearRect(
+        0, 0, myOverlay.width, myOverlay.height
+    );
+
+    if (!myInside) return;
+
+    let w = myOverlay.width * myPreview;
+    let h = myOverlay.height * myPreview;
+
+    let x = Math.max(0, Math.min(
+        myOverlay.width - w,
+        myMouseX - w / 2
+    ));
+
+    let y = Math.max(0, Math.min(
+        myOverlay.height - h,
+        myMouseY - h / 2
+    ));
+
+    myOverlayCtx.save();
+
+    myOverlayCtx.setLineDash([8, 6]);
+
+    myOverlayCtx.strokeStyle = "cyan";
+    myOverlayCtx.lineWidth = 3;
+
+    myOverlayCtx.shadowBlur = 12;
+    myOverlayCtx.shadowColor = "cyan";
+
+    myOverlayCtx.strokeRect(x, y, w, h);
+
+    myOverlayCtx.restore();
+}
+
+// Mouse movement
+myCanvas.onmousemove = function(e) {
+
+    let rect = myCanvas.getBoundingClientRect();
+
+    myMouseX = (e.clientX - rect.left) * myScale;
+    myMouseY = (e.clientY - rect.top) * myScale;
+
+    myInside = true;
+
+    myDrawPreview();
 };
-myCanvas.onmouseleave=()=>myInside=false;
 
-myCanvas.onclick=()=>{
-let w=myCanvas.width*myPreview, h=myCanvas.height*myPreview;
-let x=Math.max(0,Math.min(myCanvas.width-w,myMouseX-w/2));
-let y=Math.max(0,Math.min(myCanvas.height-h,myMouseY-h/2));
-myX+=((x+w/2)/myCanvas.width-.5)*mySize;
-myY+=((y+h/2)/myCanvas.height-.5)*mySize*myCanvas.height/myCanvas.width;
-mySize*=myPreview;
-myDraw();
+myCanvas.onmouseleave = function() {
+
+    myInside = false;
+    myDrawPreview();
+
 };
 
-myCanvas.onwheel=e=>{
-e.preventDefault();
-myPreview=Math.max(.05,Math.min(.8,myPreview*(e.deltaY<0?.85:1.18)));
-myDraw();
+// Click to zoom into the preview area
+myCanvas.onclick = function() {
+
+    let w = myCanvas.width * myPreview;
+    let h = myCanvas.height * myPreview;
+
+    let x = Math.max(0, Math.min(
+        myCanvas.width - w,
+        myMouseX - w / 2
+    ));
+
+    let y = Math.max(0, Math.min(
+        myCanvas.height - h,
+        myMouseY - h / 2
+    ));
+
+    myX += ((x + w / 2) / myCanvas.width - 0.5) * mySize;
+
+    myY += ((y + h / 2) / myCanvas.height - 0.5)
+        * mySize * myCanvas.height / myCanvas.width;
+
+    mySize *= myPreview;
+
+    myDraw();
 };
 
-function myZoomIn(){mySize*=.5;myDraw();}
-function myZoomOut(){mySize*=2;myDraw();}
-function myReset(){myX=-.5;myY=0;mySize=3.5;myPreview=.25;myDraw();}
+// Scroll to change preview size
+myCanvas.onwheel = function(e) {
 
-function myInfo(){
-let box=document.getElementById("myModal");
-box.style.display=box.style.display==="block"?"none":"block";
+    e.preventDefault();
+
+    myPreview = Math.max(
+        0.05,
+        Math.min(
+            0.8,
+            myPreview * (e.deltaY < 0 ? 0.85 : 1.18)
+        )
+    );
+
+    myDrawPreview();
+};
+
+// Zoom buttons
+function myZoomIn() {
+
+    mySize *= 0.5;
+    myDraw();
+
 }
 
-window.onresize=myResize;
+function myZoomOut() {
+
+    mySize *= 2;
+    myDraw();
+
+}
+
+// Reset everything
+function myReset() {
+
+    myX = -0.5;
+    myY = 0;
+
+    mySize = 3.5;
+    myPreview = 0.25;
+
+    myDraw();
+
+}
+
+// Information popup
+function myInfo() {
+
+    let box = document.getElementById("myModal");
+
+    box.style.display =
+        box.style.display === "block" ? "none" : "block";
+
+}
+
+// Resize event
+window.onresize = myResize;
+
+// Start the fractal!
 myResize();
+
 </script>
+
 </body>
 </html>
