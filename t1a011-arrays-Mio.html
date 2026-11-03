@@ -1,18 +1,130 @@
-<h2 align="center">t1a11-arrays-Mio.html</h2>
-<a href="https://www.w3schools.com
-Max Array Entry: <input type="number" id="myText01" value="3"><br><br>
-<input type="button" value="Example onClick" onclick="{
-    let myTemp = document.getElementById('myText01').value
-    let mySum = ''
-    document.getElementById('myDiv01').innerHTML = ''
-    let myArray = new Array()
-    myArray[0] = 'Mio'
-    myArray[1] = 'Mary'
-    myArray[2] = 'Lizzy'
-for (let myLoop = 0; myLoop < myTemp; myLoop++) {
- mySum += 'Loop #: ' + myLoop + ' array entry: ' + myArray[myLoop] + '<br>'
-    }
-    document.getElementById('myDiv01').innerHTML = mySum
-}">
-<div id="myDiv01">...</div>
-<br>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>t1a11-arrays-by-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 12px #00ffcc;
+        }
+
+        h2 {
+            color: #66ccff;
+        }
+
+        .box {
+            background: #152b45;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 550px;
+            border: 1px solid #00ccff;
+            border-radius: 15px;
+            box-shadow: 0 0 15px #006688;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 8px;
+            border: 2px solid #00ccff;
+        }
+
+        input[type=button] {
+            background: #00ccaa;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #myDiv01 {
+            color: #00ffcc;
+            font-size: 18px;
+            margin: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Mio's Arrays Assignment</h1>
+
+    <div class="box">
+
+        <h2>t1a11-arrays-by-Mio.html</h2>
+
+        <p>
+            <a href="https://www.w3schools.com/js/js_arrays.asp"
+            style="color:#66ccff;">
+                Good reference to Javascript Arrays
+            </a>
+        </p>
+
+        <h3>Example Working Array Code</h3>
+
+        <p>Max Array Entry:</p>
+
+        <input type="number" id="myText01" value="3" min="1" max="3">
+
+        <br>
+
+        <input type="button" value="Example onClick"
+        onclick="
+            let myTemp = Number(document.getElementById('myText01').value);
+
+            let myArray = ['Mio', 'Mary', 'Lizzy'];
+
+            let mySum = '';
+
+            if (myTemp < 1 || myTemp > 3 || !Number.isInteger(myTemp)) {
+                mySum = 'Enter a number from 1 to 3!';
+            } else {
+                for (let myLoop = 0; myLoop < myTemp; myLoop++) {
+                    mySum += 'Loop #: ' + myLoop +
+                    ' | Array entry: ' + myArray[myLoop] + '<br>';
+                }
+            }
+
+            document.getElementById('myDiv01').innerHTML = mySum;
+        ">
+
+        <div id="myDiv01">
+            Your array results will appear here!
+        </div>
+
+        <hr>
+
+        <h3>Another Array: Numbers</h3>
+
+        <input type="button" value="Show Number Array"
+        onclick="
+            let myNumbers = [10, 20, 30, 40, 50];
+
+            document.getElementById('myDiv02').innerHTML =
+            'Numbers: ' + myNumbers.join(', ') +
+            '<br>Total: ' +
+            myNumbers.reduce((a, b) => a + b, 0);
+        ">
+
+        <div id="myDiv02" style="color:#00ffcc; margin:20px;">
+            Number array results appear here!
+        </div>
+
+    </div>
+
+    <p>You can make arrays that do different things, including numbers!</p>
+
+    <p>✨ Created by Mio ✨</p>
+
+</body>
+</html>
