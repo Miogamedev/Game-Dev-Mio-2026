@@ -1,8 +1,11 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>t1a07-decision-by-Mio.html</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
         body {
@@ -11,6 +14,7 @@
             font-family: Arial;
             text-align: center;
             padding: 20px;
+            margin: 0;
         }
 
         h1, h2 {
@@ -18,7 +22,9 @@
             text-shadow: 0 0 10px #00ffcc;
         }
 
-        a { color: #00ffff; }
+        a {
+            color: #00ffff;
+        }
 
         .box {
             background: #202044;
@@ -31,9 +37,11 @@
         }
 
         input {
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             margin: 8px;
+            font-size: 16px;
+            max-width: 85%;
         }
 
         input[type=button] {
@@ -46,12 +54,14 @@
 
         input[type=button]:hover {
             background: #66ff66;
+            box-shadow: 0 0 10px #00ffcc;
         }
 
         #myDiv01 {
             color: #00ffcc;
             font-size: 20px;
             margin-top: 20px;
+            min-height: 30px;
         }
 
         pre {
@@ -59,26 +69,45 @@
             color: #66ffcc;
             padding: 15px;
             text-align: left;
+            overflow-x: auto;
+            border-radius: 10px;
+        }
+
+        .highlight {
+            color: yellow;
+            font-weight: bold;
+        }
+
+        .small {
+            color: #aaaaaa;
         }
     </style>
 </head>
 
 <body>
 
-<h6>Version 0.0.3</h6>
-<h1>T1A07-Decision-by-Mio.html</h1>
+    <h6>Version 0.0.4</h6>
 
-<div class="box">
-    <h2>Reference Link</h2>
-    <a href="https://www.w3schools.html/js/js_if_else.asp" target="_blank">
-        JavaScript if...else Reference
-    </a>
-    <p>! = NOT, && = AND, || = OR</p>
-</div>
+    <h1>⚡ T1A07 Decision by Mio ⚡</h1>
 
-<div class="box">
-    <h2>Example Input Output Code</h2>
-    <pre>
+    <div class="box">
+        <h2>📚 Reference Link</h2>
+
+        <a href="https://www.w3schools.com/js/js_if_else.asp"
+           target="_blank"
+           rel="noopener noreferrer">
+            JavaScript if...else Reference
+        </a>
+
+        <p>! = NOT</p>
+        <p>&& = AND</p>
+        <p>|| = OR</p>
+    </div>
+
+    <div class="box">
+        <h2>💻 Example Input Output Code</h2>
+
+        <pre>
 let myHour = 20;
 
 if (myHour < 18) {
@@ -86,59 +115,202 @@ if (myHour < 18) {
 } else {
     let myGreeting = 'Good evening';
 }
-    </pre>
-</div>
+        </pre>
 
-<div class="box">
-    <h2>Example Working Code</h2>
+        <p class="small">
+            This code uses an if...else decision.
+        </p>
+    </div>
 
-    <p>Enter a number:</p>
-    <input id="myNum01" type="number" value="4">
+    <div class="box">
+        <h2>🎮 Example Working Code</h2>
 
-    <br>
+        <p>Enter a number:</p>
 
-    <input type="button" value="Simple if" onclick="check(1)">
-    <input type="button" value="if...else" onclick="check(2)">
-    <input type="button" value="Complex if" onclick="check(3)">
-    <input type="button" value="Reset" onclick="resetAnswer()">
+        <input
+            id="myNum01"
+            type="number"
+            value="4"
+            placeholder="Enter a number"
+            onkeydown="if(event.key === 'Enter') check(2)"
+        >
 
-    <div id="myDiv01">Your answer will appear here!</div>
-</div>
+        <br>
 
-<script>
-function check(type) {
-    let num = document.getElementById('myNum01').value;
-    let result = document.getElementById('myDiv01');
+        <input
+            type="button"
+            value="Simple if"
+            onclick="check(1)"
+        >
 
-    if (num.trim() === '') {
-        result.innerHTML = 'Please enter a number!';
-        return;
-    }
+        <input
+            type="button"
+            value="if...else"
+            onclick="check(2)"
+        >
 
-    num = Number(num);
+        <input
+            type="button"
+            value="Complex if"
+            onclick="check(3)"
+        >
 
-    if (type === 1) {
-        result.innerHTML = num >= 3 ? num + ' is greater than or equal to 3' : 'Try a number 3 or higher!';
-    }
+        <input
+            type="button"
+            value="Reset"
+            onclick="resetAnswer()"
+        >
 
-    if (type === 2) {
-        result.innerHTML = num >= 3 ? num + ' is greater than or equal to 3' : num + ' is less than 3';
-    }
+        <div id="myDiv01">
+            Your answer will appear here!
+        </div>
+    </div>
 
-    if (type === 3) {
-        result.innerHTML = num != 3 && num > -3 && num <= 100
-            ? num + ' is complex!'
-            : num + ' is not complex.';
-    }
-}
+    <div class="box">
+        <h2>🎲 Random Number Challenge</h2>
 
-function resetAnswer() {
-    document.getElementById('myNum01').value = 4;
-    document.getElementById('myDiv01').innerHTML = 'Your answer will appear here!';
-}
-</script>
+        <p>
+            Guess a number between 1 and 10!
+        </p>
 
-<h6>End of T1A07-Decision-by-Mio.html</h6>
+        <input
+            type="number"
+            id="myGuess"
+            min="1"
+            max="10"
+            placeholder="Your guess"
+            onkeydown="if(event.key === 'Enter') guessNumber()"
+        >
+
+        <br>
+
+        <input
+            type="button"
+            value="Check Guess"
+            onclick="guessNumber()"
+        >
+
+        <div id="myDiv02">
+            Good luck!
+        </div>
+    </div>
+
+    <script>
+
+        // Decision examples
+
+        function check(type) {
+
+            let num = document.getElementById('myNum01').value;
+
+            let result = document.getElementById('myDiv01');
+
+            if (num.trim() === '') {
+                result.innerHTML = '⚠️ Please enter a number!';
+                return;
+            }
+
+            num = Number(num);
+
+            if (!Number.isFinite(num)) {
+                result.innerHTML = 'Please enter a valid number!';
+                return;
+            }
+
+            if (type === 1) {
+
+                if (num >= 3) {
+                    result.innerHTML =
+                        num + ' is greater than or equal to 3!';
+                }
+
+            }
+
+            if (type === 2) {
+
+                if (num >= 3) {
+                    result.innerHTML =
+                        num + ' is greater than or equal to 3!';
+                } else {
+                    result.innerHTML =
+                        num + ' is less than 3!';
+                }
+
+            }
+
+            if (type === 3) {
+
+                if (num != 3 && num > -3 && num <= 100) {
+                    result.innerHTML =
+                        '⭐ ' + num + ' is complex!';
+                } else {
+                    result.innerHTML =
+                        num + ' is not complex.';
+                }
+
+            }
+
+        }
+
+        // Reset button
+
+        function resetAnswer() {
+
+            document.getElementById('myNum01').value = 4;
+
+            document.getElementById('myDiv01').innerHTML =
+                'Your answer will appear here!';
+
+        }
+
+        // Random number challenge
+
+        let mySecretNumber =
+            Math.floor(Math.random() * 10) + 1;
+
+        function guessNumber() {
+
+            let guess =
+                document.getElementById('myGuess').value;
+
+            let result =
+                document.getElementById('myDiv02');
+
+            if (guess.trim() === '') {
+                result.innerHTML = '⚠️ Enter a number first!';
+                return;
+            }
+
+            guess = Number(guess);
+
+            if (!Number.isInteger(guess) || guess < 1 || guess > 10) {
+                result.innerHTML =
+                    'Enter a whole number from 1 to 10!';
+                return;
+            }
+
+            if (guess === mySecretNumber) {
+
+                result.innerHTML =
+                    '🎉 CORRECT! You won!';
+
+            } else if (guess < mySecretNumber) {
+
+                result.innerHTML =
+                    '⬆️ Too low! Try again!';
+
+            } else {
+
+                result.innerHTML =
+                    '⬇️ Too high! Try again!';
+
+            }
+
+        }
+
+    </script>
+
+    <h6>End of T1A07-Decision-by-Mio.html</h6>
 
 </body>
 </html>
