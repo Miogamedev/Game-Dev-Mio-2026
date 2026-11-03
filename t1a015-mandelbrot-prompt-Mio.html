@@ -1,1 +1,127 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>t1a015-Mandelbrot-prompt-Mio.html</title>
+<style>
+body { margin:0; background:black; color:white; font-family:Arial; overflow:hidden; }
+canvas { display:block; }
+h2 { position:fixed; top:5px; width:100%; text-align:center; color:cyan; text-shadow:0 0 15px blue; pointer-events:none; }
+#myZoom { position:fixed; top:55px; left:15px; color:magenta; }
+#myHint { position:fixed; top:15px; left:15px; }
+#myButtons { position:fixed; bottom:15px; left:50%; transform:translateX(-50%); white-space:nowrap; }
+button { padding:10px; background:#101030; color:cyan; border:1px solid cyan; border-radius:8px; cursor:pointer; }
+#myModal { display:none; position:fixed; z-index:5; top:35%; left:10%; width:80%; padding:20px; box-sizing:border-box; text-align:center; background:#101030; border:2px solid cyan; border-radius:15px; }
+</style>
+</head>
+<body>
+
+<h2>Mandelbrot Fractal by Mio</h2>
+<div id="myZoom">Zoom: 1x</div>
+<button id="myHint" onclick="myInfo()">💡 Info</button>
+
+<div id="myModal">
+<h2>About the Fractal</h2>
+<p>Made using Z(n+1) = Z(n)² + C.</p>
+<p>Move your mouse to preview, click to zoom, and scroll to resize the box.</p>
+<button onclick="myInfo()">Close</button>
+</div>
+
+<div id="myButtons">
+<button onclick="myZoomIn()">Zoom In</button>
+<button onclick="myZoomOut()">Zoom Out</button>
+<button onclick="myReset()">Reset</button>
+</div>
+
+<canvas id="myCanvas"></canvas>
+
+<script>
+let myCanvas=document.getElementById("myCanvas"), myCtx=myCanvas.getContext("2d");
+let myX=-0.5, myY=0, mySize=3.5, myPreview=0.25;
+let myMouseX=0, myMouseY=0, myInside=false, myToken=0;
+
+function myResize(){
+myCanvas.width=innerWidth; myCanvas.height=innerHeight; myDraw();
+}
+
+async function myDraw(){
+let myID=++myToken, w=myCanvas.width, h=myCanvas.height;
+let img=myCtx.createImageData(w,h), d=img.data;
+let max=120, height=mySize*h/w;
+
+for(let y=0;y<h;y++){
+if(myID!==myToken)return;
+for(let x=0;x<w;x++){
+let a=myX+(x/w-.5)*mySize, b=myY+(y/h-.5)*height;
+let r=0,i=0,n=0;
+while(r*r+i*i<256 && n<max){
+let t=r*r-i*i+a; i=2*r*i+b; r=t; n++;
+}
+let k=(y*w+x)*4, c=n*0.12;
+d[k]=n===max?0:128+127*Math.sin(c);
+d[k+1]=n===max?0:128+127*Math.sin(c+2);
+d[k+2]=n===max?0:128+127*Math.sin(c+4);
+d[k+3]=255;
+}
+if(y%15===0) await new Promise(resolve=>setTimeout(resolve,0));
+}
+if(myID===myToken)myCtx.putImageData(img,0,0);
+document.getElementById("myZoom").innerText="Zoom: "+(3.5/mySize).toFixed(2)+"x";
+myPreviewBox();
+}
+
+function myPreviewBox(){
+myDrawPreview();
+}
+
+function myDrawPreview(){
+if(!myInside)return;
+let w=myCanvas.width*myPreview, h=myCanvas.height*myPreview;
+let x=Math.max(0,Math.min(myCanvas.width-w,myMouseX-w/2));
+let y=Math.max(0,Math.min(myCanvas.height-h,myMouseY-h/2));
+myCtx.save();
+myCtx.setLineDash([8,6]);
+myCtx.strokeStyle="cyan";
+myCtx.lineWidth=3;
+myCtx.shadowBlur=12;
+myCtx.shadowColor="cyan";
+myCtx.strokeRect(x,y,w,h);
+myCtx.restore();
+}
+
+myCanvas.onmousemove=e=>{
+myMouseX=e.offsetX; myMouseY=e.offsetY;
+myInside=true; myDrawPreview();
+};
+myCanvas.onmouseleave=()=>myInside=false;
+
+myCanvas.onclick=()=>{
+let w=myCanvas.width*myPreview, h=myCanvas.height*myPreview;
+let x=Math.max(0,Math.min(myCanvas.width-w,myMouseX-w/2));
+let y=Math.max(0,Math.min(myCanvas.height-h,myMouseY-h/2));
+myX+=((x+w/2)/myCanvas.width-.5)*mySize;
+myY+=((y+h/2)/myCanvas.height-.5)*mySize*myCanvas.height/myCanvas.width;
+mySize*=myPreview;
+myDraw();
+};
+
+myCanvas.onwheel=e=>{
+e.preventDefault();
+myPreview=Math.max(.05,Math.min(.8,myPreview*(e.deltaY<0?.85:1.18)));
+myDraw();
+};
+
+function myZoomIn(){mySize*=.5;myDraw();}
+function myZoomOut(){mySize*=2;myDraw();}
+function myReset(){myX=-.5;myY=0;mySize=3.5;myPreview=.25;myDraw();}
+
+function myInfo(){
+let box=document.getElementById("myModal");
+box.style.display=box.style.display==="block"?"none":"block";
+}
+
+window.onresize=myResize;
+myResize();
+</script>
+</body>
+</html>
