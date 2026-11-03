@@ -1,1 +1,154 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>t1a10-events-by-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 12px #00ffcc;
+        }
+
+        .box {
+            background: #152b45;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 550px;
+            border: 1px solid #00ccff;
+            border-radius: 15px;
+            box-shadow: 0 0 15px #006688;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 8px;
+            border-radius: 8px;
+            border: 2px solid #00ccff;
+        }
+
+        input[type=button] {
+            background: #00ccaa;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        a {
+            color: #66ccff;
+        }
+
+        #myDiv01, #myDiv02 {
+            color: #00ffcc;
+            font-size: 20px;
+            margin: 15px;
+        }
+    </style>
+
+    <script>
+        function showMessage() {
+            document.getElementById('myDiv01').innerHTML =
+            document.getElementById('myText01').value;
+        }
+    </script>
+</head>
+
+<body>
+
+    <h1>Mio's Events Assignment</h1>
+
+    <div class="box">
+
+        <h2>t1a10-Events-by-Mio.html</h2>
+
+        <a href="https://way2tutorial.com/html/html5_events_handler_list.php">
+            Good reference to HTML Events
+        </a>
+
+        <p>Events are HTML code that activates Javascript code.</p>
+
+        <hr>
+
+        <h3>1. onClick</h3>
+
+        <input type="text" id="myText01" value="3">
+        <input type="button" value="Click Me"
+        onclick="showMessage()">
+
+        <div id="myDiv01">Your text appears here!</div>
+
+        <hr>
+
+        <h3>2. onMouseOver</h3>
+
+        <b onmouseover="this.innerHTML='This is cool!'"
+        onmouseout="this.innerHTML='Move your mouse over me!'">
+            Move your mouse over me!
+        </b>
+
+        <hr>
+
+        <h3>3. ondblclick</h3>
+
+        <button ondblclick="
+        document.getElementById('myDiv02').innerHTML='Double clicked!'">
+            Double Click Me
+        </button>
+
+        <hr>
+
+        <h3>4. onChange</h3>
+
+        <select onchange="
+        document.getElementById('myDiv02').innerHTML=this.value">
+            <option>Choose one</option>
+            <option>Option 1</option>
+            <option>Option 2</option>
+        </select>
+
+        <hr>
+
+        <h3>5. onFocus</h3>
+
+        <input placeholder="Click inside me"
+        onfocus="document.getElementById('myDiv02').innerHTML='Focused!'">
+
+        <hr>
+
+        <h3>6. onBlur</h3>
+
+        <input placeholder="Click here then leave"
+        onblur="document.getElementById('myDiv02').innerHTML='You left!'">
+
+        <hr>
+
+        <h3>7. onKeyDown</h3>
+
+        <input placeholder="Press a key"
+        onkeydown="document.getElementById('myDiv02').innerHTML='Key pressed!'">
+
+        <hr>
+
+        <h3>8. onMouseMove</h3>
+
+        <div style="background:#003d55; padding:20px;"
+        onmousemove="document.getElementById('myDiv02').innerHTML='Mouse moving!'">
+            Move your mouse inside this box!
+        </div>
+
+        <div id="myDiv02">Event messages appear here!</div>
+
+    </div>
+
+    <p>✨ Created by Mio ✨</p>
+
+</body>
+</html>
