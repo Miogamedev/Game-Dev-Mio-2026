@@ -1,1 +1,132 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>t1a09-functions-by-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #002b45);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 12px #00ffcc;
+        }
+
+        h2 {
+            color: #66ccff;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 550px;
+            border-radius: 15px;
+            border: 1px solid #00ccff;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.2);
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 8px;
+            border: 2px solid #00ccff;
+            font-size: 16px;
+        }
+
+        input[type=button] {
+            background: #00ccaa;
+            color: #101030;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover {
+            background: #66ffdd;
+            box-shadow: 0 0 12px #00ffcc;
+        }
+
+        #myDiv01 {
+            color: #00ffcc;
+            font-size: 22px;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #66ccff;
+        }
+    </style>
+
+    <script>
+        function myExampleFunction() {
+            let myIn01 = parseInt(document.getElementById('myText01').value);
+
+            if (isNaN(myIn01)) {
+                document.getElementById('myDiv01').innerHTML =
+                    'Please enter a valid number!';
+                return;
+            }
+
+            let mySum = myIn01 + myIn01;
+
+            let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+
+            return myReply;
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <h1>Mio's Functions Assignment</h1>
+
+    <div class="box">
+
+        <h2>t1a09-functions-by-Mio.html</h2>
+
+        <p>
+            <a href="https://www.w3schools.com/js/js_functions.asp">
+                Good reference to Javascript functions
+            </a>
+        </p>
+
+        <p>
+            Functions are used to sensibly organize code.
+            Then they are "Called" elsewhere.
+            Information can also be passed to functions
+            (that's more advanced).
+        </p>
+
+        <h3>Example Working Code</h3>
+
+        <p>Enter a number and see what happens!</p>
+
+        <input type="text" id="myText01" value="3">
+
+        <br><br>
+
+        <input type="button" value="Function Example"
+        onclick="
+            document.getElementById('myDiv01').innerHTML =
+            myExampleFunction()
+        ">
+
+        <div id="myDiv01">
+            Your answer will appear here!
+        </div>
+
+    </div>
+
+    <p>✨ Created by Mio ✨</p>
+
+</body>
+
+</html>
