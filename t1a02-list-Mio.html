@@ -1,7 +1,152 @@
-<h1>t1a02-list-Mio.html</h1>
-orca
-blue whale
-dolphin
-humpback whale
-beluga whale
-https://www.animalsaroundtheglobe.com/wp-content/uploads/2024/03/Orca.jpg
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t1a02-list-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #001a33, #004466, #001122);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 25px;
+        }
+
+        h1 {
+            color: cyan;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        table {
+            margin: 25px auto;
+            border-collapse: collapse;
+            width: 70%;
+            background: #002b44;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        th {
+            background: #006688;
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+        }
+
+        td {
+            border: 1px solid cyan;
+            padding: 12px;
+            font-size: 18px;
+        }
+
+        tr:hover {
+            background: #005577;
+            transition: 0.3s;
+        }
+
+        img {
+            width: 300px;
+            border: 3px solid cyan;
+            border-radius: 15px;
+            box-shadow: 0 0 20px cyan;
+            margin: 20px;
+        }
+
+        button {
+            background: #006688;
+            color: white;
+            border: 2px solid cyan;
+            border-radius: 10px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: cyan;
+            color: #001122;
+            box-shadow: 0 0 15px cyan;
+        }
+
+        #myMessage {
+            color: cyan;
+            font-size: 20px;
+            margin: 20px;
+        }
+
+        .footer {
+            color: cyan;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🌊 Mio's Ocean Animal List 🌊</h1>
+
+    <p>Discover some amazing animals that live in our oceans!</p>
+
+    <img src="https://www.animalsaroundtheglobe.com/wp-content/uploads/2024/03/Orca.jpg"
+         alt="Orca swimming in the ocean">
+
+    <table>
+        <tr>
+            <th>Number</th>
+            <th>Ocean Animal</th>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>🐋 Orca</td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>🐋 Blue Whale</td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>🐬 Dolphin</td>
+        </tr>
+
+        <tr>
+            <td>4</td>
+            <td>🐋 Humpback Whale</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>🐋 Beluga Whale</td>
+        </tr>
+    </table>
+
+    <button onclick="myOceanMessage()">Click for an Ocean Fact!</button>
+
+    <div id="myMessage"></div>
+
+    <script>
+        let myFacts = [
+            "Orcas are also called killer whales!",
+            "Blue whales are the largest animals on Earth!",
+            "Dolphins use sounds to communicate!",
+            "Humpback whales are famous for their songs!",
+            "Beluga whales are sometimes called sea canaries!"
+        ];
+
+        function myOceanMessage() {
+            let myRandom = Math.floor(Math.random() * myFacts.length);
+
+            document.getElementById("myMessage").innerHTML =
+                "🌊 " + myFacts[myRandom] + " 🌊";
+        }
+    </script>
+
+    <div class="footer">
+        ⚡ Created by Mio | Ocean Animal Project ⚡
+    </div>
+
+</body>
+</html>
+```
