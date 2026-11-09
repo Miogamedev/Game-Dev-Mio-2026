@@ -1,1 +1,182 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>t2a016-powerup-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        h2 {
+            color: #66ccff;
+        }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 550px;
+            margin: 25px auto;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: #66ffff;
+            box-shadow: 0 0 15px cyan;
+        }
+
+        #powerBar {
+            background: #111;
+            border: 1px solid cyan;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        #powerFill {
+            background: linear-gradient(90deg, #00ffcc, #0088ff);
+            height: 100%;
+            width: 100%;
+            transition: width 0.3s;
+        }
+
+        #myDiv01 {
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>⚡ Captain Code Power-Up ⚡</h1>
+    <h2>Hero Training Centre</h2>
+
+    <div class="box">
+
+        <h2>Train Your Hero!</h2>
+
+        <p>Click the button to train Captain Code.</p>
+
+        <button onclick="trainHero()">
+            Train Captain Code ⚡
+        </button>
+
+        <div id="powerBar">
+            <div id="powerFill"></div>
+        </div>
+
+        <div id="myDiv01"></div>
+
+    </div>
+
+    <script>
+
+        // Step 1: Create the global hero object
+
+        let myHero = {
+            name: "Captain Code",
+            power: 100,
+            comment: "Ready for training!"
+        };
+
+
+        // Step 2: Create the training function
+
+        function trainHero() {
+
+            // Subtract 10 power every click
+
+            myHero.power = myHero.power - 10;
+
+
+            // Step 3 and 4: Check the power level
+
+            if (myHero.power <= 0) {
+
+                alert("Captain Code needs to recharge!");
+
+                myHero.comment =
+                    "Training complete! Power restored! ⚡";
+
+                myHero.power = 100;
+
+            } else if (myHero.power > 70) {
+
+                myHero.comment =
+                    "Power level: HIGH! ⚡";
+
+            } else if (myHero.power > 30) {
+
+                myHero.comment =
+                    "Power level: MEDIUM! 🔋";
+
+            } else {
+
+                myHero.comment =
+                    "Power level: LOW! Keep training!";
+
+            }
+
+
+            // Step 5: Display updated hero information
+
+            updateHeroDisplay();
+
+        }
+
+
+        // Update the hero information on the webpage
+
+        function updateHeroDisplay() {
+
+            document.getElementById("myDiv01").innerHTML =
+                "<h3>" + myHero.name + "</h3>" +
+                "Power: " + myHero.power + "/100" +
+                "<br>Comment: " + myHero.comment;
+
+
+            // Update the neon power meter
+
+            document.getElementById("powerFill").style.width =
+                myHero.power + "%";
+
+        }
+
+
+        // Display the hero when the page loads
+
+        updateHeroDisplay();
+
+    </script>
+
+</body>
+
+</html>
+
