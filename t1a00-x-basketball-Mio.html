@@ -1,1 +1,197 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>t1a00-x-basketball-Mio.html</title>
+<style>
+body {
+    background:linear-gradient(135deg,#101030,#003344);
+    color:white;font-family:Arial;text-align:center;
+}
+h1 {color:#00ffcc;text-shadow:0 0 15px cyan;}
+canvas {
+    width:95%;max-width:800px;background:#bd753b;
+    border:3px solid #00ffcc;border-radius:12px;
+    touch-action:none;
+}
+button {
+    padding:12px 25px;background:#00ffcc;
+    border:0;border-radius:10px;font-weight:bold;
+    cursor:pointer;margin:5px;
+}
+#power {color:#ffff00;text-shadow:0 0 12px yellow;}
+</style>
+</head>
+<body>
+
+<h1>🏀 Mio Basketball Stars</h1>
+<h3>
+Score: <span id="score">0</span> |
+Time: <span id="time">60</span> |
+Best: <span id="best">0</span>
+</h3>
+<h2 id="power">POWER SHOTS: 0 / 3</h2>
+
+<canvas id="game" width="800" height="400"></canvas>
+<p id="message">Score 3 baskets in a row to unlock POWER SHOT!</p>
+<button onclick="startGame()">Start Game</button>
+<button onclick="startGame()">Restart</button>
+<p>Drag backwards from the ball and release to shoot!</p>
+
+<script>
+const c=document.getElementById("game");
+const ctx=c.getContext("2d");
+let score=0,time=60,playing=false;
+let best=Number(localStorage.getItem("basketBest"))||0;
+let streak=0,power=false;
+let ball={x:120,y:320,vx:0,vy:0};
+let dragging=false,dx=0,dy=0,timer;
+
+document.getElementById("best").textContent=best;
+
+function draw(){
+    ctx.clearRect(0,0,800,400);
+    ctx.fillStyle="#bd753b";
+    ctx.fillRect(0,0,800,400);
+
+    // Court markings
+    ctx.strokeStyle="white";ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(0,370);ctx.lineTo(800,370);ctx.stroke();
+
+    // Hoop
+    ctx.fillStyle="white";ctx.fillRect(735,90,10,100);
+    ctx.strokeStyle="red";ctx.lineWidth=6;
+    ctx.beginPath();ctx.moveTo(660,180);ctx.lineTo(740,180);ctx.stroke();
+
+    // Net
+    ctx.strokeStyle="white";ctx.lineWidth=2;
+    for(let i=0;i<6;i++){
+        ctx.beginPath();
+        ctx.moveTo(665+i*14,180);
+        ctx.lineTo(680+i*9,215);ctx.stroke();
+    }
+
+    // Basketball glow
+    ctx.save();
+    if(power){
+        ctx.shadowBlur=30;
+        ctx.shadowColor="yellow";
+    }
+    ctx.fillStyle=power?"#ffff00":"#ff8c00";
+    ctx.beginPath();ctx.arc(ball.x,ball.y,16,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle="#4a2000";ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(ball.x-15,ball.y);ctx.lineTo(ball.x+15,ball.y);
+    ctx.moveTo(ball.x,ball.y-15);ctx.lineTo(ball.x,ball.y+15);
+    ctx.stroke();
+    ctx.restore();
+
+    if(dragging){
+        ctx.strokeStyle="cyan";ctx.setLineDash([6,6]);
+        ctx.beginPath();ctx.moveTo(ball.x,ball.y);
+        ctx.lineTo(dx,dy);ctx.stroke();ctx.setLineDash([]);
+    }
+}
+
+function updateText(){
+    document.getElementById("score").textContent=score;
+    document.getElementById("time").textContent=time;
+    document.getElementById("best").textContent=best;
+    document.getElementById("power").textContent=
+        power?"⚡ POWER SHOT READY! ⚡":"POWER SHOTS: "+streak+" / 3";
+}
+
+function startGame(){
+    clearInterval(timer);
+    score=0;time=60;streak=0;power=false;
+    playing=true;resetBall();updateText();
+    document.getElementById("message").textContent="Let's play!";
+    timer=setInterval(()=>{
+        time--;updateText();
+        if(time<=0){
+            playing=false;clearInterval(timer);
+            document.getElementById("message").textContent=
+                "🏆 GAME OVER! Final score: "+score;
+        }
+    },1000);
+}
+
+function resetBall(){
+    ball={x:120,y:320,vx:0,vy:0};
+    dragging=false;
+}
+
+function position(e){
+    let r=c.getBoundingClientRect();
+    return {x:(e.clientX-r.left)*800/r.width,
+            y:(e.clientY-r.top)*400/r.height};
+}
+
+c.addEventListener("pointerdown",e=>{
+    if(!playing||ball.vx||ball.vy)return;
+    let p=position(e);
+    if(Math.hypot(p.x-ball.x,p.y-ball.y)<40){
+        dragging=true;dx=p.x;dy=p.y;
+        c.setPointerCapture(e.pointerId);
+    }
+});
+
+c.addEventListener("pointermove",e=>{
+    if(!dragging)return;
+    let p=position(e);dx=p.x;dy=p.y;
+});
+
+c.addEventListener("pointerup",()=>{
+    if(!dragging)return;
+    ball.vx=Math.max(-20,Math.min(20,(ball.x-dx)*.35));
+    ball.vy=Math.max(-20,Math.min(20,(ball.y-dy)*.35));
+    dragging=false;
+});
+
+function update(){
+    if(playing&&(ball.vx||ball.vy)){
+        let oldY=ball.y;
+        ball.x+=ball.vx;ball.y+=ball.vy;
+        ball.vy+=.25;ball.vx*=.995;
+
+        // Basket scored!
+        if(oldY<180&&ball.y>=180&&ball.vy>0&&
+           ball.x>660&&ball.x<740){
+            let points=ball.x<400?3:2;
+            if(power){
+                points*=2;power=false;streak=0;
+                document.getElementById("message").textContent=
+                    "⚡ POWER SHOT! DOUBLE POINTS!";
+            }else{
+                streak++;
+                document.getElementById("message").textContent=
+                    "🏀 NICE SHOT! +"+points;
+                if(streak>=3){
+                    power=true;streak=0;
+                    document.getElementById("message").textContent=
+                        "🔥 POWER SHOT UNLOCKED!";
+                }
+            }
+            score+=points;ball.vx=0;ball.vy=0;
+            if(score>best){
+                best=score;
+                localStorage.setItem("basketBest",best);
+            }
+            updateText();
+            setTimeout(resetBall,700);
+        }
+
+        if(ball.y>354){
+            ball.y=354;ball.vy*= -.6;ball.vx*=.8;
+            if(Math.abs(ball.vy)<2)resetBall();
+        }
+        if(ball.x< -30||ball.x>830||ball.y>450)resetBall();
+    }
+    draw();
+    requestAnimationFrame(update);
+}
+update();
+</script>
+</body>
+</html>
