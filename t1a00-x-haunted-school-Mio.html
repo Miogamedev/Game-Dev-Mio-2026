@@ -1,1 +1,310 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>t1a00-x-haunted-school-Mio.html</title>
+<style>
+body {
+    background: #080812;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+h1 {
+    color: #ff3333;
+    text-shadow: 0 0 15px red;
+}
+canvas {
+    width: 95%;
+    max-width: 800px;
+    border: 3px solid red;
+    border-radius: 10px;
+    background: black;
+}
+button {
+    padding: 12px 25px;
+    background: #ff3333;
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#message { color: #ffff66; }
+</style>
+</head>
+
+<body>
+
+<h1>👻 MIO: THE HAUNTED SCHOOL</h1>
+
+<h3>
+🔑 Keys: <span id="keys">0</span>/3
+</h3>
+
+<canvas id="game" width="800" height="520"></canvas>
+
+<p id="message">Find 3 keys and escape the haunted school!</p>
+
+<button onclick="startGame()">Start / Restart</button>
+
+<p>Use WASD or arrow keys to move.</p>
+<p>Find all 3 keys. Avoid the shadow. Escape through the exit!</p>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const map = [
+"####################",
+"#P....#......#....E#",
+"#.#.#.#.####.#.##..#",
+"#.#.#...#....#.....#",
+"#.#.###.#.##.#####.#",
+"#...#...#..#.......#",
+"###.#.#####.#####..#",
+"#...#.....#.....#..#",
+"#.#####.#.#.###.#..#",
+"#.....#.#...#...#..#",
+"#.###.#.#####.##...#",
+"#K....K.......K...D#",
+"####################"
+];
+
+const tile = 40;
+
+let player, ghost, keys, playing = false;
+let lastMove = 0;
+let lastGhostMove = 0;
+let won = false;
+
+function startGame() {
+    player = {x:1, y:1};
+    ghost = {x:18, y:1};
+    keys = [[1,11],[6,11],[14,11]];
+    playing = true;
+    won = false;
+    lastMove = 0;
+    lastGhostMove = 0;
+
+    document.getElementById("keys").textContent = "0";
+    document.getElementById("message").textContent =
+        "Something is watching you...";
+
+    draw();
+}
+
+function wall(x,y) {
+    return map[y]?.[x] === "#" || !map[y]?.[x];
+}
+
+function movePlayer(dx,dy) {
+    if (!playing) return;
+
+    let nx = player.x + dx;
+    let ny = player.y + dy;
+
+    if (!wall(nx,ny)) {
+        player.x = nx;
+        player.y = ny;
+    }
+
+    // Collect keys
+    keys = keys.filter(key => {
+        if (key[0] === player.x && key[1] === player.y) {
+            document.getElementById("keys").textContent =
+                3 - keys.length + 1;
+            document.getElementById("message").textContent =
+                "🔑 You found a key!";
+            return false;
+        }
+        return true;
+    });
+
+    // Exit door
+    if (player.x === 18 && player.y === 11) {
+        if (keys.length === 0) {
+            won = true;
+            playing = false;
+            document.getElementById("message").textContent =
+                "🏆 YOU ESCAPED THE HAUNTED SCHOOL!";
+        } else {
+            document.getElementById("message").textContent =
+                "The exit is locked! Find all 3 keys!";
+        }
+    }
+
+    if (player.x === ghost.x && player.y === ghost.y) {
+        loseGame();
+    }
+}
+
+function moveGhost() {
+    if (keys.length === 3 || !playing) return;
+
+    // Find a path through the maze
+    let queue = [[ghost.x,ghost.y]];
+    let visited = {};
+    let previous = {};
+
+    visited[ghost.x+","+ghost.y] = true;
+
+    while (queue.length) {
+        let [x,y] = queue.shift();
+
+        if (x === player.x && y === player.y) break;
+
+        for (let [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+            let nx = x+dx, ny = y+dy;
+            let id = nx+","+ny;
+
+            if (!wall(nx,ny) && !visited[id]) {
+                visited[id] = true;
+                previous[id] = [x,y];
+                queue.push([nx,ny]);
+            }
+        }
+    }
+
+    // Follow the path toward the player
+    let current = [player.x,player.y];
+    let id = current.join(",");
+
+    if (!visited[id]) return;
+
+    while (previous[id] &&
+           !(previous[id][0] === ghost.x &&
+             previous[id][1] === ghost.y)) {
+        current = previous[id];
+        id = current.join(",");
+    }
+
+    if (previous[id]) {
+        ghost.x = current[0];
+        ghost.y = current[1];
+    }
+
+    if (ghost.x === player.x && ghost.y === player.y) {
+        loseGame();
+    }
+}
+
+function loseGame() {
+    playing = false;
+    document.getElementById("message").textContent =
+        "👻 THE SHADOW CAUGHT YOU! Press Restart to try again.";
+}
+
+function draw() {
+    ctx.clearRect(0,0,800,520);
+
+    // Draw maze
+    for (let y=0;y<13;y++) {
+        for (let x=0;x<20;x++) {
+            ctx.fillStyle = wall(x,y) ? "#292938" : "#55505a";
+            ctx.fillRect(x*tile,y*tile,tile,tile);
+
+            if (wall(x,y)) {
+                ctx.strokeStyle = "#444455";
+                ctx.strokeRect(x*tile,y*tile,tile,tile);
+            }
+        }
+    }
+
+    // Draw keys
+    keys.forEach(key => {
+        ctx.fillStyle = "yellow";
+        ctx.font = "25px Arial";
+        ctx.fillText("🔑",key[0]*tile+7,key[1]*tile+29);
+    });
+
+    // Exit door
+    ctx.fillStyle = keys.length === 0 ? "#00ff66" : "#990000";
+    ctx.fillRect(18*tile+5,11*tile+5,30,30);
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText("🚪",18*tile+5,11*tile+29);
+
+    // Ghost
+    ctx.fillStyle = "#ff2222";
+    ctx.shadowColor = "red";
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.arc(ghost.x*tile+20,ghost.y*tile+20,14,0,Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Player
+    ctx.fillStyle = "#00ffff";
+    ctx.beginPath();
+    ctx.arc(player.x*tile+20,player.y*tile+20,13,0,Math.PI*2);
+    ctx.fill();
+
+    // Flashlight darkness effect
+    ctx.fillStyle = "rgba(0,0,0,0.94)";
+    ctx.fillRect(0,0,800,520);
+
+    let light = ctx.createRadialGradient(
+        player.x*tile+20,player.y*tile+20,25,
+        player.x*tile+20,player.y*tile+20,150
+    );
+
+    light.addColorStop(0,"rgba(0,0,0,0)");
+    light.addColorStop(1,"rgba(0,0,0,1)");
+
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = light;
+    ctx.fillRect(0,0,800,520);
+    ctx.globalCompositeOperation = "source-over";
+
+    if (!playing) {
+        ctx.fillStyle = "rgba(0,0,0,0.7)";
+        ctx.fillRect(0,0,800,520);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 28px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(won ? "YOU ESCAPED!" : "GAME OVER",400,260);
+        ctx.textAlign = "left";
+    }
+}
+
+document.addEventListener("keydown",e => {
+    let directions = {
+        ArrowUp:[0,-1], w:[0,-1],
+        ArrowDown:[0,1], s:[0,1],
+        ArrowLeft:[-1,0], a:[-1,0],
+        ArrowRight:[1,0], d:[1,0]
+    };
+
+    let direction = directions[e.key];
+
+    if (direction && playing) {
+        e.preventDefault();
+        let now = Date.now();
+
+        if (now-lastMove > 130) {
+            movePlayer(direction[0],direction[1]);
+            lastMove = now;
+            draw();
+        }
+    }
+});
+
+function loop() {
+    if (playing && keys.length < 3 &&
+        Date.now()-lastGhostMove > 550) {
+        moveGhost();
+        lastGhostMove = Date.now();
+    }
+
+    if (playing) draw();
+    requestAnimationFrame(loop);
+}
+
+startGame();
+loop();
+</script>
+
+</body>
+</html>
+
