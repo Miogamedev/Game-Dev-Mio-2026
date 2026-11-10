@@ -1,1 +1,289 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t1a00-x-target-blaster-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        canvas {
+            background: #101020;
+            border: 3px solid #00ffcc;
+            border-radius: 15px;
+            box-shadow: 0 0 20px cyan;
+            max-width: 100%;
+            cursor: crosshair;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 15px;
+        }
+
+        button:hover {
+            background: yellow;
+            box-shadow: 0 0 15px yellow;
+        }
+
+        #message {
+            color: #00ffcc;
+            font-size: 20px;
+            min-height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎯 Mio: Target Blaster 🎯</h1>
+    <p>Click the colorful targets before time runs out!</p>
+
+    <div class="stats">
+        <div>⭐ Score: <span id="score">0</span></div>
+        <div>❤️ Lives: <span id="lives">5</span></div>
+        <div>⏱️ Time: <span id="time">45</span></div>
+        <div>🏆 Best: <span id="best">0</span></div>
+    </div>
+
+    <canvas id="game" width="700" height="450"></canvas>
+
+    <br>
+    <button onclick="startGame()">Start / Restart</button>
+
+    <p id="message">Press Start to play!</p>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let score = 0;
+let lives = 5;
+let time = 45;
+let targets = [];
+let playing = false;
+let timer;
+let animation;
+let best = Number(localStorage.getItem("targetBest")) || 0;
+
+document.getElementById("best").textContent = best;
+
+const colors = ["#00ffcc", "#ff55cc", "#ffff00", "#ff8844", "#66aaff"];
+
+function makeTarget() {
+    let radius = 18 + Math.random() * 15;
+
+    return {
+        x: radius + Math.random() * (canvas.width - radius * 2),
+        y: radius + Math.random() * (canvas.height - radius * 2),
+        radius: radius,
+        speedX: (Math.random() - 0.5) * 5,
+        speedY: (Math.random() - 0.5) * 5,
+        color: colors[Math.floor(Math.random() * colors.length)]
+    };
+}
+
+function startGame() {
+    cancelAnimationFrame(animation);
+    clearInterval(timer);
+
+    score = 0;
+    lives = 5;
+    time = 45;
+    targets = [];
+
+    for (let i = 0; i < 4; i++) {
+        targets.push(makeTarget());
+    }
+
+    playing = true;
+
+    document.getElementById("message").textContent = "Go! Pop the targets!";
+    updateStats();
+
+    timer = setInterval(() => {
+        if (!playing) return;
+
+        time--;
+        updateStats();
+
+        if (time <= 0) {
+            endGame("Time is up!");
+        }
+    }, 1000);
+
+    draw();
+}
+
+function updateStats() {
+    document.getElementById("score").textContent = score;
+    document.getElementById("lives").textContent = lives;
+    document.getElementById("time").textContent = time;
+    document.getElementById("best").textContent = best;
+}
+
+function drawTarget(target) {
+    ctx.save();
+
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = target.color;
+
+    ctx.fillStyle = target.color;
+    ctx.beginPath();
+    ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(target.x, target.y, target.radius * 0.65, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = target.color;
+    ctx.beginPath();
+    ctx.arc(target.x, target.y, target.radius * 0.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+}
+
+function draw() {
+    if (!playing) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw background stars
+    for (let i = 0; i < 35; i++) {
+        ctx.fillStyle = "#334455";
+        ctx.fillRect((i * 97) % 700, (i * 61) % 450, 2, 2);
+    }
+
+    targets.forEach(target => {
+        target.x += target.speedX;
+        target.y += target.speedY;
+
+        if (target.x < target.radius ||
+            target.x > canvas.width - target.radius) {
+            target.speedX *= -1;
+        }
+
+        if (target.y < target.radius ||
+            target.y > canvas.height - target.radius) {
+            target.speedY *= -1;
+        }
+
+        drawTarget(target);
+    });
+
+    animation = requestAnimationFrame(draw);
+}
+
+canvas.addEventListener("click", function(event) {
+    if (!playing) return;
+
+    const rect = canvas.getBoundingClientRect();
+
+    const mouseX = (event.clientX - rect.left) *
+                   (canvas.width / rect.width);
+
+    const mouseY = (event.clientY - rect.top) *
+                   (canvas.height / rect.height);
+
+    let hit = false;
+
+    for (let i = targets.length - 1; i >= 0; i--) {
+        let target = targets[i];
+
+        let dx = mouseX - target.x;
+        let dy = mouseY - target.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < target.radius) {
+            score += 10;
+            targets[i] = makeTarget();
+            hit = true;
+
+            // Add another target every 50 points
+            if (score % 50 === 0 && targets.length < 9) {
+                targets.push(makeTarget());
+            }
+
+            break;
+        }
+    }
+
+    if (!hit) {
+        lives--;
+        document.getElementById("message").textContent = "Miss! Keep trying!";
+    } else {
+        document.getElementById("message").textContent = "Nice hit! +10 points!";
+    }
+
+    if (score > best) {
+        best = score;
+        localStorage.setItem("targetBest", best);
+    }
+
+    updateStats();
+
+    if (lives <= 0) {
+        endGame("No lives left!");
+    }
+});
+
+function endGame(reason) {
+    playing = false;
+    clearInterval(timer);
+    cancelAnimationFrame(animation);
+
+    document.getElementById("message").textContent =
+        reason + " Final score: " + score + " points!";
+    
+    updateStats();
+
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ffcc";
+    ctx.font = "bold 38px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER!", canvas.width / 2, 205);
+
+    ctx.fillStyle = "white";
+    ctx.font = "24px Arial";
+    ctx.fillText("Score: " + score, canvas.width / 2, 250);
+}
+</script>
+
+</body>
+</html>
+
