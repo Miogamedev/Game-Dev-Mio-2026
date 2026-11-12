@@ -2,219 +2,226 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>t1a00-x-penalty-shootout-Mio.html</title>
-<style>
-body {
-    background:linear-gradient(135deg,#101030,#003344);
-    color:white;font-family:Arial;text-align:center;
-}
-h1 {color:#00ffcc;text-shadow:0 0 15px cyan}
-.stats {font-size:19px;margin:15px}
-canvas {
-    width:95%;max-width:700px;
-    border:3px solid #00ffcc;border-radius:15px;
-    box-shadow:0 0 20px cyan;cursor:crosshair;
-    touch-action:manipulation;
-}
-button {
-    background:#00ffcc;color:#101030;
-    border:0;border-radius:10px;padding:12px 20px;
-    margin:10px;font-size:17px;font-weight:bold;
-    cursor:pointer;
-}
-#message {color:#00ffcc;font-size:20px}
-</style>
+    <title>Penalty Shootout - Mio</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #080820, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        .game {
+            max-width: 600px;
+            margin: auto;
+            background: #151535;
+            padding: 20px;
+            border: 2px solid cyan;
+            border-radius: 20px;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        .goal {
+            background: #176b42;
+            border: 8px solid white;
+            border-bottom: 12px solid white;
+            height: 210px;
+            margin: 20px auto;
+            max-width: 420px;
+            position: relative;
+            overflow: hidden;
+            background-image:
+                linear-gradient(#ffffff30 1px, transparent 1px),
+                linear-gradient(90deg, #ffffff30 1px, transparent 1px);
+            background-size: 35px 35px;
+        }
+
+        #keeper {
+            font-size: 55px;
+            position: absolute;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all .3s;
+        }
+
+        #ball {
+            font-size: 35px;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all .5s;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #001b22;
+            border: none;
+            padding: 12px 20px;
+            margin: 6px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: yellow;
+            transform: scale(1.08);
+        }
+
+        button:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+        #message {
+            color: #00ffcc;
+            font-size: 22px;
+            min-height: 30px;
+        }
+
+        .stats {
+            color: yellow;
+            font-size: 19px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>⚽ MIO: PENALTY SHOOTOUT ⚽</h1>
-<p>Neon Stadium Challenge</p>
+<h1>⚽ PENALTY SHOOTOUT</h1>
+<h3>🔥 MIO FOOTBALL CHALLENGE 🔥</h3>
 
-<div class="stats">
-⭐ Score: <span id="score">0</span> |
-🥅 Goals: <span id="goals">0</span> |
-⚽ Shots: <span id="shots">5</span> |
-⏱️ Time: <span id="time">60</span> |
-🏆 Best: <span id="best">0</span>
+<div class="game">
+
+    <div class="stats">
+        Goals: <span id="score">0</span> |
+        Shots: <span id="shots">0</span>/5
+    </div>
+
+    <div class="goal">
+        <div id="keeper">🧤</div>
+        <div id="ball">⚽</div>
+    </div>
+
+    <h3>Choose your shooting direction!</h3>
+
+    <button onclick="choose('left')">⬅ LEFT</button>
+    <button onclick="choose('center')">⬆ CENTER</button>
+    <button onclick="choose('right')">RIGHT ➡</button>
+
+    <p id="aim">Aim: CENTER</p>
+
+    <button id="shoot" onclick="shoot()">⚽ SHOOT!</button>
+
+    <p id="message">Ready to take your first shot?</p>
+
+    <h2 id="result"></h2>
+
+    <button onclick="restart()">🔄 PLAY AGAIN</button>
+
 </div>
 
-<canvas id="game" width="700" height="450"></canvas>
-
-<br>
-<button onclick="startGame()">▶ Start / Restart</button>
-<button onclick="powerShot()">⚡ Power Shot</button>
-
-<p id="message">Press Start to play!</p>
-
 <script>
-const c=document.getElementById("game");
-const ctx=c.getContext("2d");
+    let score = 0;
+    let shots = 0;
+    let direction = "center";
+    let playing = true;
 
-let score=0,goals=0,shots=5,time=60;
-let keeper=350,dir=1,playing=false,ball=null;
-let power=false,timer,animation;
-let best=Number(localStorage.getItem("penaltyBest"))||0;
-document.getElementById("best").textContent=best;
+    const positions = {
+        left: "20%",
+        center: "50%",
+        right: "80%"
+    };
 
-function stats(){
-    document.getElementById("score").textContent=score;
-    document.getElementById("goals").textContent=goals;
-    document.getElementById("shots").textContent=shots;
-    document.getElementById("time").textContent=time;
-    document.getElementById("best").textContent=best;
-}
+    function choose(dir) {
+        if (!playing) return;
 
-function powerShot(){
-    if(playing && shots>0 && !ball){
-        power=true;
-        document.getElementById("message").textContent="⚡ POWER SHOT READY!";
-    }
-}
-
-function startGame(){
-    clearInterval(timer);
-    cancelAnimationFrame(animation);
-    score=0;goals=0;shots=5;time=60;
-    keeper=350;dir=1;ball=null;power=false;playing=true;
-    stats();
-    document.getElementById("message").textContent="Aim inside the goal!";
-    draw();
-    timer=setInterval(()=>{
-        time--;stats();
-        if(time<=0)endGame();
-    },1000);
-}
-
-function draw(){
-    if(!playing)return;
-
-    // Stadium
-    let sky=ctx.createLinearGradient(0,0,0,450);
-    sky.addColorStop(0,"#080824");
-    sky.addColorStop(1,"#176b35");
-    ctx.fillStyle=sky;
-    ctx.fillRect(0,0,700,450);
-
-    // Stadium lights
-    ctx.fillStyle="cyan";
-    ctx.shadowColor="cyan";ctx.shadowBlur=25;
-    [60,640].forEach(x=>{
-        ctx.beginPath();ctx.arc(x,40,12,0,7);ctx.fill();
-    });
-    ctx.shadowBlur=0;
-
-    // Goal net
-    ctx.fillStyle="#dfffff";
-    ctx.fillRect(100,80,500,200);
-    ctx.strokeStyle="#88aaaa";ctx.lineWidth=2;
-    for(let x=100;x<=600;x+=25){
-        ctx.beginPath();ctx.moveTo(x,80);ctx.lineTo(x,280);ctx.stroke();
-    }
-    for(let y=80;y<=280;y+=25){
-        ctx.beginPath();ctx.moveTo(100,y);ctx.lineTo(600,y);ctx.stroke();
+        direction = dir;
+        document.getElementById("aim").innerText =
+            "Aim: " + dir.toUpperCase();
     }
 
-    // Goal posts
-    ctx.strokeStyle="white";ctx.lineWidth=9;
-    ctx.strokeRect(100,80,500,200);
+    function shoot() {
+        if (!playing || shots >= 5) return;
 
-    // Goalkeeper
-    keeper+=dir*3;
-    if(keeper>520||keeper<180)dir*=-1;
-    ctx.fillStyle="#ffcc00";
-    ctx.fillRect(keeper-20,180,40,65);
-    ctx.fillStyle="#ffcc99";
-    ctx.beginPath();ctx.arc(keeper,160,18,0,7);ctx.fill();
-    ctx.strokeStyle="#ffcc99";ctx.lineWidth=12;
-    ctx.beginPath();
-    ctx.moveTo(keeper-15,195);ctx.lineTo(keeper-45,220);
-    ctx.moveTo(keeper+15,195);ctx.lineTo(keeper+45,220);
-    ctx.stroke();
+        shots++;
 
-    // Ball
-    if(ball){
-        ball.p+=0.04;
-        ball.x=350+(ball.tx-350)*ball.p;
-        ball.y=410+(ball.ty-410)*ball.p;
-        ctx.fillStyle="white";
-        ctx.beginPath();ctx.arc(ball.x,ball.y,13*(1-ball.p*.5),0,7);
-        ctx.fill();
-        if(ball.p>=1){finishShot();return;}
-    }else{
-        ctx.fillStyle="white";
-        ctx.beginPath();ctx.arc(350,410,13,0,7);ctx.fill();
+        let keeperChoice =
+            ["left", "center", "right"]
+            [Math.floor(Math.random() * 3)];
+
+        let keeper = document.getElementById("keeper");
+        let ball = document.getElementById("ball");
+
+        keeper.style.left = positions[keeperChoice];
+
+        ball.style.left = positions[direction];
+        ball.style.bottom = "130px";
+
+        if (direction === keeperChoice) {
+            document.getElementById("message").innerText =
+                "🧤 SAVED! The goalkeeper got it!";
+        } else {
+            score++;
+            document.getElementById("message").innerText =
+                "🔥 GOOOOAL! Amazing shot!";
+        }
+
+        document.getElementById("score").innerText = score;
+        document.getElementById("shots").innerText = shots;
+
+        document.getElementById("shoot").disabled = true;
+
+        setTimeout(() => {
+            ball.style.left = "50%";
+            ball.style.bottom = "5px";
+
+            if (shots === 5) {
+                playing = false;
+
+                document.getElementById("result").innerText =
+                    "🏆 FINAL SCORE: " + score + "/5";
+
+                document.getElementById("message").innerText =
+                    score >= 3 ? "CHAMPION! 🥇" : "GOOD TRY! ⚽";
+            } else {
+                document.getElementById("shoot").disabled = false;
+            }
+        }, 900);
     }
 
-    // Field
-    ctx.strokeStyle="#ccffcc";ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(0,300);ctx.lineTo(700,300);ctx.stroke();
+    function restart() {
+        score = 0;
+        shots = 0;
+        direction = "center";
+        playing = true;
 
-    animation=requestAnimationFrame(draw);
-}
+        document.getElementById("score").innerText = 0;
+        document.getElementById("shots").innerText = 0;
+        document.getElementById("aim").innerText = "Aim: CENTER";
+        document.getElementById("message").innerText =
+            "Ready to take your first shot?";
+        document.getElementById("result").innerText = "";
 
-c.addEventListener("pointerdown",e=>{
-    if(!playing||ball)return;
-    const r=c.getBoundingClientRect();
-    let x=(e.clientX-r.left)*700/r.width;
-    let y=(e.clientY-r.top)*450/r.height;
+        document.getElementById("keeper").style.left = "50%";
 
-    if(x<110||x>590||y<90||y>270)return;
+        let ball = document.getElementById("ball");
+        ball.style.left = "50%";
+        ball.style.bottom = "5px";
 
-    shots--;
-    let saved=Math.abs(x-keeper)<(power?30:65);
-    ball={tx:x,ty:y,p:0,saved:saved,bonus:power};
-    power=false;
-    stats();
-    document.getElementById("message").textContent="SHOOT! ⚽";
-});
-
-function finishShot(){
-    if(ball.saved){
-        document.getElementById("message").textContent="🧤 SAVE!";
-    }else{
-        goals++;
-        score+=ball.bonus?20:10;
-        document.getElementById("message").textContent=
-            ball.bonus?"⚡ POWER GOAL! +20":"🔥 GOAL! +10";
+        document.getElementById("shoot").disabled = false;
     }
-    ball=null;
-
-    if(score>best){
-        best=score;
-        localStorage.setItem("penaltyBest",best);
-    }
-    stats();
-
-    if(shots<=0)endGame();
-}
-
-function endGame(){
-    playing=false;ball=null;
-    clearInterval(timer);
-    cancelAnimationFrame(animation);
-    stats();
-    drawFinal();
-    document.getElementById("message").textContent=
-        "🏆 Game Over! Final score: "+score;
-}
-
-function drawFinal(){
-    // Draw a final stadium background
-    ctx.fillStyle="#080824";
-    ctx.fillRect(0,0,700,450);
-    ctx.fillStyle="#00ffcc";
-    ctx.textAlign="center";
-    ctx.font="bold 42px Arial";
-    ctx.fillText("GAME OVER!",350,190);
-    ctx.fillStyle="white";
-    ctx.font="25px Arial";
-    ctx.fillText("Score: "+score,350,240);
-    ctx.fillText("Goals: "+goals,350,280);
-    ctx.fillText("Best: "+best,350,320);
-}
 </script>
 
 </body>
 </html>
-
-
