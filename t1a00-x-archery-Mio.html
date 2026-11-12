@@ -1,1 +1,240 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Archery Master - Mio</title>
+<style>
+body {
+    background:linear-gradient(135deg,#080820,#003344);
+    color:white;
+    font-family:Arial;
+    text-align:center;
+}
+h1 {color:#00ffcc;text-shadow:0 0 15px cyan;}
+.game {
+    max-width:600px;
+    margin:auto;
+    padding:20px;
+    background:#151535;
+    border:2px solid cyan;
+    border-radius:20px;
+    box-shadow:0 0 20px cyan;
+}
+canvas {
+    background:linear-gradient(#72c7ed,#d8f5ff);
+    width:100%;
+    border:3px solid white;
+    border-radius:10px;
+    cursor:crosshair;
+    touch-action:manipulation;
+}
+button {
+    background:#00ffcc;
+    border:0;
+    padding:12px 22px;
+    margin:8px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+button:hover {background:yellow;}
+.stats {color:yellow;font-size:20px;}
+</style>
+</head>
+<body>
+
+<h1>🏹 ARCHERY MASTER</h1>
+<h3>🔥 MIO'S TARGET CHALLENGE 🔥</h3>
+
+<div class="game">
+    <div class="stats">
+        Score: <span id="score">0</span> |
+        Arrows: <span id="arrows">10</span> |
+        Time: <span id="time">30</span>
+    </div>
+
+    <canvas id="game" width="560" height="330"></canvas>
+
+    <p id="message">Click the target area to aim, then SHOOT!</p>
+    <button onclick="shoot()">🏹 SHOOT!</button>
+    <button onclick="restart()">🔄 RESTART</button>
+</div>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let score, arrows, time, aimX, aimY;
+let targetX, targetY, targetDir;
+let arrow, playing, timer;
+
+function restart() {
+    clearInterval(timer);
+    score = 0;
+    arrows = 10;
+    time = 30;
+    aimX = 280;
+    aimY = 160;
+    targetX = 430;
+    targetY = 140;
+    targetDir = 2;
+    arrow = null;
+    playing = true;
+
+    update();
+    draw();
+
+    timer = setInterval(() => {
+        if (!playing) return;
+        time--;
+        update();
+        if (time <= 0) endGame();
+    }, 1000);
+}
+
+function update() {
+    document.getElementById("score").textContent = score;
+    document.getElementById("arrows").textContent = arrows;
+    document.getElementById("time").textContent = time;
+}
+
+function drawTarget() {
+    ctx.beginPath();
+    ctx.arc(targetX,targetY,48,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(targetX,targetY,38,0,Math.PI*2);
+    ctx.fillStyle="#e33";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(targetX,targetY,26,0,Math.PI*2);
+    ctx.fillStyle="#ffe600";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(targetX,targetY,12,0,Math.PI*2);
+    ctx.fillStyle="#e33";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(targetX,targetY,5,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+}
+
+function draw() {
+    ctx.clearRect(0,0,560,330);
+
+    // Ground
+    ctx.fillStyle="#438d42";
+    ctx.fillRect(0,285,560,45);
+
+    // Target stand
+    ctx.fillStyle="#75421f";
+    ctx.fillRect(targetX-4,targetY+45,8,115);
+
+    drawTarget();
+
+    // Archer
+    ctx.font="40px Arial";
+    ctx.fillText("🏹",35,255);
+
+    // Aim marker
+    if (playing && !arrow) {
+        ctx.beginPath();
+        ctx.arc(aimX,aimY,7,0,Math.PI*2);
+        ctx.strokeStyle="#003344";
+        ctx.lineWidth=2;
+        ctx.stroke();
+    }
+
+    // Flying arrow
+    if (arrow) {
+        ctx.font="30px Arial";
+        ctx.fillText("➤",arrow.x,arrow.y);
+    }
+}
+
+canvas.addEventListener("pointerdown",e => {
+    if (!playing || arrow) return;
+    const rect=canvas.getBoundingClientRect();
+    aimX=(e.clientX-rect.left)*560/rect.width;
+    aimY=(e.clientY-rect.top)*330/rect.height;
+    draw();
+});
+
+function shoot() {
+    if (!playing || arrows<=0 || arrow) return;
+
+    arrows--;
+    update();
+
+    arrow = {
+        x:65,
+        y:245,
+        targetX:aimX,
+        targetY:aimY,
+        progress:0
+    };
+
+    document.getElementById("message").textContent="🏹 Arrow flying!";
+}
+
+function animate() {
+    if (playing) {
+        targetX += targetDir;
+        if (targetX > 480 || targetX < 350) targetDir *= -1;
+    }
+
+    if (arrow) {
+        arrow.progress += 0.07;
+        arrow.x = 65+(arrow.targetX-65)*arrow.progress;
+        arrow.y = 245+(arrow.targetY-245)*arrow.progress;
+
+        if (arrow.progress >= 1) {
+            let distance = Math.hypot(
+                arrow.targetX-targetX,
+                arrow.targetY-targetY
+            );
+
+            if (distance < 12) {
+                score += 10;
+                document.getElementById("message").textContent="🎯 BULLSEYE! +10";
+            } else if (distance < 26) {
+                score += 7;
+                document.getElementById("message").textContent="🔥 GREAT SHOT! +7";
+            } else if (distance < 48) {
+                score += 3;
+                document.getElementById("message").textContent="⭐ NICE HIT! +3";
+            } else {
+                document.getElementById("message").textContent="❌ MISSED! Try again!";
+            }
+
+            arrow = null;
+            update();
+
+            if (arrows === 0) endGame();
+        }
+    }
+
+    draw();
+    requestAnimationFrame(animate);
+}
+
+function endGame() {
+    playing = false;
+    clearInterval(timer);
+    document.getElementById("message").textContent =
+        "🏆 GAME OVER! Final score: "+score;
+}
+
+restart();
+animate();
+</script>
+
+</body>
+</html>
+
