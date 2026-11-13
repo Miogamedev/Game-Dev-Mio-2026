@@ -1,1 +1,149 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a020-sort-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 650px;
+            margin: auto;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #66ffff;
+            box-shadow: 0 0 15px cyan;
+        }
+
+        #myDiv01 {
+            background: #101030;
+            color: #66ff66;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 20px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🔢 t2a020-sort-Mio.html</h1>
+    <h2>Number Sorting Challenge</h2>
+
+    <div class="box">
+
+        <p>Generate random numbers and sort them from lowest to highest!</p>
+
+        <button onclick="setRandom()">🎲 Set Random</button>
+
+        <button onclick="showNumbers()">👀 Show</button>
+
+        <button onclick="sortNumbers()">📊 Sort</button>
+
+        <button onclick="resetNumbers()">🔄 Reset</button>
+
+        <div id="myDiv01">
+            Your numbers will appear here!
+        </div>
+
+    </div>
+
+    <script>
+
+        let myMax = 10; // 52 when working
+        let myCards = new Array(myMax);
+
+        function setRandom() {
+
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                myCards[myLoop] = Math.floor(Math.random() * 100);
+            }
+
+            showNumbers();
+        }
+
+        function showNumbers() {
+
+            let myTemp = "";
+
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                myTemp += myLoop + " = " + myCards[myLoop] + "<br>";
+            }
+
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+
+        function sortNumbers() {
+
+            // Sort numbers from smallest to largest
+            for (let i = 0; i < myMax - 1; i++) {
+
+                for (let j = 0; j < myMax - 1 - i; j++) {
+
+                    if (myCards[j] > myCards[j + 1]) {
+
+                        let temp = myCards[j];
+
+                        myCards[j] = myCards[j + 1];
+
+                        myCards[j + 1] = temp;
+
+                    }
+                }
+            }
+
+            let myTemp = "<h3>✅ Sorted Numbers!</h3>";
+
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                myTemp += myCards[myLoop] + "<br>";
+            }
+
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+
+        function resetNumbers() {
+
+            myCards = new Array(myMax);
+
+            document.getElementById('myDiv01').innerHTML =
+                "Numbers reset! Click Set Random to play again.";
+
+        }
+
+    </script>
+
+</body>
+</html>
+
