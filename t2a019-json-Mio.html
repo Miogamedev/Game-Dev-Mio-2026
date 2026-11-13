@@ -1,1 +1,153 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a019-json-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 650px;
+            margin: auto;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        select, button {
+            padding: 12px;
+            margin: 10px;
+            border-radius: 10px;
+            border: 2px solid cyan;
+            background: #101030;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #00ffcc;
+            color: black;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 15px;
+            border: 2px solid cyan;
+            margin-top: 15px;
+        }
+
+        pre {
+            background: #101030;
+            color: #66ff66;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        #myDiv1 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🦊 t2a019-json-Mio.html</h1>
+    <h2>Random Fox JSON Explorer</h2>
+
+    <div class="box">
+
+        <p>Choose an API to load random JSON data!</p>
+
+        <select id="mySelect" onchange="fetchData(this.value)">
+            <option value="">Choose an API</option>
+            <option value="https://randomfox.ca/floof/">Random Fox</option>
+        </select>
+
+        <br>
+
+        <button onclick="fetchData('https://randomfox.ca/floof/')">
+            🦊 Get Another Fox
+        </button>
+
+        <div id="myDiv1">
+            <h3>Choose an API to get started!</h3>
+        </div>
+
+    </div>
+
+    <script>
+
+        async function fetchData(url) {
+
+            if (!url) return;
+
+            const output = document.getElementById('myDiv1');
+
+            output.innerHTML = "<h3>Loading... 🦊</h3>";
+
+            try {
+
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error("Could not load data");
+                }
+
+                const data = await response.json();
+
+                console.log(data);
+
+                const myJson = JSON.stringify(data, null, 2);
+
+                output.innerHTML = "";
+
+                const heading = document.createElement("h3");
+                heading.textContent = "JSON Data:";
+                output.appendChild(heading);
+
+                const pre = document.createElement("pre");
+                pre.textContent = myJson;
+                output.appendChild(pre);
+
+                if (data.image) {
+
+                    const img = document.createElement("img");
+                    img.src = data.image;
+                    img.alt = "Random Fox";
+
+                    output.appendChild(img);
+                }
+
+            } catch (error) {
+
+                output.innerHTML =
+                    "<h3>Oops! Could not load JSON data.</h3>";
+
+                console.log(error);
+
+            }
+        }
+
+    </script>
+
+</body>
+</html>
+
