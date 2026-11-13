@@ -6,7 +6,7 @@
 
     <style>
         body {
-            background: #080820;
+            background: #101030;
             color: white;
             font-family: Arial;
             text-align: center;
@@ -20,116 +20,40 @@
         canvas {
             border: 3px solid cyan;
             border-radius: 10px;
-            max-width: 95%;
-            background: #101040;
-        }
-
-        button {
-            background: cyan;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 17px;
-            margin: 10px;
+            background-image: url("space-background.png");
+            background-size: cover;
         }
     </style>
 </head>
 
 <body>
 
-<h1>🚀 Mio's Space Adventure</h1>
-<p>Collect stars and avoid asteroids!</p>
+<h1>t2a018-game-template-Mio.html</h1>
 
-<h3 id="score">Score: 0</h3>
+<p>My Level 1 JavaScript Game Template</p>
 
-<canvas id="game" width="700" height="450"></canvas>
-<br>
+<canvas id="myCanvas" width="700" height="450"></canvas>
 
-<button onclick="startGame()">Start / Restart</button>
-
-<p>Use WASD or arrow keys to move.</p>
-<p>Made by Mio</p>
+<p>Game coming soon!</p>
 
 <script>
-let canvas = document.getElementById("game");
-let ctx = canvas.getContext("2d");
+    // Set up the canvas
+    let myCanvas = document.getElementById("myCanvas");
+    let myContext = myCanvas.getContext("2d");
 
-let x = 100;
-let y = 200;
-let score = 0;
-let playing = false;
+    // Game variables
+    let myPlayerX = 100;
+    let myPlayerY = 100;
+    let myScore = 0;
 
-let star = {x: 400, y: 200};
-let rock = {x: 650, y: 100};
+    // Draw the game
+    function drawGame() {
+        myContext.clearRect(0, 0, 700, 450);
 
-let keys = {};
-
-document.onkeydown = e => keys[e.key.toLowerCase()] = true;
-document.onkeyup = e => keys[e.key.toLowerCase()] = false;
-
-function startGame() {
-    x = 100;
-    y = 200;
-    score = 0;
-    rock.x = 650;
-    playing = true;
-    draw();
-}
-
-function draw() {
-    if (!playing) return;
-
-    ctx.fillStyle = "#101040";
-    ctx.fillRect(0, 0, 700, 450);
-
-    // Stars in background
-    ctx.fillStyle = "white";
-    for (let i = 0; i < 40; i++) {
-        ctx.fillRect(i * 37 % 700, i * 71 % 450, 2, 2);
+        // More game code will go here later
     }
 
-    // Player movement
-    if (keys["arrowup"] || keys["w"]) y -= 4;
-    if (keys["arrowdown"] || keys["s"]) y += 4;
-    if (keys["arrowleft"] || keys["a"]) x -= 4;
-    if (keys["arrowright"] || keys["d"]) x += 4;
-
-    x = Math.max(15, Math.min(685, x));
-    y = Math.max(15, Math.min(435, y));
-
-    // Player
-    ctx.font = "30px Arial";
-    ctx.fillText("🚀", x - 15, y + 10);
-
-    // Collect star
-    ctx.fillText("⭐", star.x, star.y);
-
-    if (Math.hypot(x - star.x, y - star.y) < 30) {
-        score += 10;
-        star.x = Math.random() * 650 + 20;
-        star.y = Math.random() * 400 + 20;
-        document.getElementById("score").innerText = "Score: " + score;
-    }
-
-    // Asteroid
-    rock.x -= 3;
-    if (rock.x < 0) {
-        rock.x = 700;
-        rock.y = Math.random() * 400;
-    }
-
-    ctx.fillText("☄️", rock.x, rock.y);
-
-    // Collision
-    if (Math.hypot(x - rock.x, y - rock.y) < 35) {
-        playing = false;
-        alert("Game Over! Your score: " + score);
-        return;
-    }
-
-    requestAnimationFrame(draw);
-}
+    drawGame();
 </script>
 
 </body>
