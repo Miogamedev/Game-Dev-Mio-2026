@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,52 +6,32 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #101030, #003344);
-            color: white;
+            background-color: lightblue;
+            color: black;
             font-family: Arial;
             text-align: center;
-            padding: 25px;
-        }
-
-        h1 {
-            color: #00ffcc;
-            text-shadow: 0 0 15px cyan;
+            padding: 20px;
         }
 
         .box {
-            background: #202044;
-            border: 2px solid #00ffcc;
-            border-radius: 20px;
-            padding: 25px;
-            max-width: 650px;
+            background-color: white;
+            padding: 20px;
+            max-width: 600px;
             margin: auto;
-            box-shadow: 0 0 20px cyan;
+            border: 2px solid black;
+            border-radius: 10px;
         }
 
         button {
-            background: #00ffcc;
-            color: #101030;
-            border: none;
-            padding: 12px 20px;
-            margin: 8px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 10px;
+            margin: 5px;
             cursor: pointer;
         }
 
-        button:hover {
-            background: #66ffff;
-            box-shadow: 0 0 15px cyan;
-        }
-
         #myDiv01 {
-            background: #101030;
-            color: #66ff66;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-            font-size: 20px;
+            background-color: lightgray;
+            padding: 15px;
+            margin-top: 15px;
             line-height: 1.8;
         }
     </style>
@@ -59,20 +39,17 @@
 
 <body>
 
-    <h1>🔢 t2a020-sort-Mio.html</h1>
+    <h1>t2a020-sort-Mio.html</h1>
     <h2>Number Sorting Challenge</h2>
 
     <div class="box">
 
         <p>Generate random numbers and sort them from lowest to highest!</p>
 
-        <button onclick="setRandom()">🎲 Set Random</button>
-
-        <button onclick="showNumbers()">👀 Show</button>
-
-        <button onclick="sortNumbers()">📊 Sort</button>
-
-        <button onclick="resetNumbers()">🔄 Reset</button>
+        <button onclick="setRandom()">Set Random</button>
+        <button onclick="showNumbers()">Show</button>
+        <button onclick="sortNumbers()">Sort</button>
+        <button onclick="resetNumbers()">Reset</button>
 
         <div id="myDiv01">
             Your numbers will appear here!
@@ -82,24 +59,22 @@
 
     <script>
 
-        let myMax = 10; // 52 when working
+        let myMax = 10;
         let myCards = new Array(myMax);
 
         function setRandom() {
-
-            for (let myLoop = 0; myLoop < myMax; myLoop++) {
-                myCards[myLoop] = Math.floor(Math.random() * 100);
+            for (let i = 0; i < myMax; i++) {
+                myCards[i] = Math.floor(Math.random() * 100);
             }
 
             showNumbers();
         }
 
         function showNumbers() {
-
             let myTemp = "";
 
-            for (let myLoop = 0; myLoop < myMax; myLoop++) {
-                myTemp += myLoop + " = " + myCards[myLoop] + "<br>";
+            for (let i = 0; i < myMax; i++) {
+                myTemp += i + " = " + myCards[i] + "<br>";
             }
 
             document.getElementById('myDiv01').innerHTML = myTemp;
@@ -107,43 +82,30 @@
 
         function sortNumbers() {
 
-            // Sort numbers from smallest to largest
             for (let i = 0; i < myMax - 1; i++) {
-
                 for (let j = 0; j < myMax - 1 - i; j++) {
 
                     if (myCards[j] > myCards[j + 1]) {
-
                         let temp = myCards[j];
-
                         myCards[j] = myCards[j + 1];
-
                         myCards[j + 1] = temp;
-
                     }
+
                 }
             }
 
-            let myTemp = "<h3>✅ Sorted Numbers!</h3>";
-
-            for (let myLoop = 0; myLoop < myMax; myLoop++) {
-                myTemp += myCards[myLoop] + "<br>";
-            }
-
-            document.getElementById('myDiv01').innerHTML = myTemp;
+            showNumbers();
         }
 
         function resetNumbers() {
-
             myCards = new Array(myMax);
 
             document.getElementById('myDiv01').innerHTML =
-                "Numbers reset! Click Set Random to play again.";
-
+                "Numbers reset! Click Set Random to start again.";
         }
 
     </script>
 
 </body>
 </html>
-
+```
