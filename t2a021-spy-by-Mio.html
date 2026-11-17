@@ -3,48 +3,84 @@
 <html>
 <head>
     <title>t2a21-spy-by-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        textarea {
+            background: #202044;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            padding: 10px;
+            max-width: 90%;
+        }
+
+        input {
+            background: #00ffcc;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1 align="center">t2a21-spy-by-Mio.html</h1>
+    <h1>🕵️ t2a21-spy-by-Mio.html</h1>
+
+    <h3>Enter your secret message</h3>
 
     <textarea id="myArea01" rows="4" cols="70">Hello how are you</textarea>
     <br><br>
 
-    <input type="button" value="encrypt" onclick="
+    <input type="button" value="Encrypt" onclick="
+        let myString = document.getElementById('myArea01').value.toLowerCase();
         let myTemp = '';
-        let myString = document.getElementById('myArea01').value.toLowerCase().split('');
 
-        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
-
-            myTemp = myString[myLoop];
-
-            if (myString[myLoop] == 'e') {
-                myTemp = 'f';
-            }
-
-            if (myString[myLoop] == 'h') {
-                myTemp = 'i';
-            }
-
-            myString[myLoop] = myTemp;
+        for (let i = 0; i < myString.length; i++) {
+            myTemp += myString[i] == 'e' ? 'f' :
+                      myString[i] == 'h' ? 'i' : myString[i];
         }
 
-        document.getElementById('myArea02').value = myString.join('');
+        document.getElementById('myArea02').value = myTemp;
     ">
+
     <br><br>
 
     <textarea id="myArea02" rows="4" cols="70"></textarea>
+
     <br><br>
 
-    <input type="button" value="decrypt" onclick="
-        alert('Sorry, you have to do this!');
+    <input type="button" value="Decrypt" onclick="
+        let myString = document.getElementById('myArea02').value;
+        let myTemp = '';
+
+        for (let i = 0; i < myString.length; i++) {
+            myTemp += myString[i] == 'f' ? 'e' :
+                      myString[i] == 'i' ? 'h' : myString[i];
+        }
+
+        document.getElementById('myArea03').value = myTemp;
     ">
+
     <br><br>
+
+    <h3>Decrypted message</h3>
 
     <textarea id="myArea03" rows="4" cols="70"></textarea>
-    <br>
 
 </body>
 </html>
