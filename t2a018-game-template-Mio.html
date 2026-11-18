@@ -6,44 +6,20 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #101030, #003344);
-            color: white;
             font-family: Arial;
             text-align: center;
         }
 
-        h1 {
-            color: #00ffcc;
-            text-shadow: 0 0 15px cyan;
-        }
-
         #myCanvas {
-            background-image: url("space-background.png");
-            background-size: cover;
-            background-position: center;
-            border: 3px solid cyan;
-            box-shadow: 0 0 15px cyan;
-        }
-
-        button {
-            background: cyan;
-            color: black;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background: #66ffff;
+            background-color: lightblue;
+            border: 1px solid black;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>🚀 Mio's Space Adventure</h1>
+    <h1>t2a018-game-template-Mio.html</h1>
     <h2>Game Template</h2>
 
     <p>Score: <span id="myScore">0</span></p>
@@ -83,6 +59,8 @@
         function startGame() {
             myGameRunning = true;
             myScore = 0;
+            myPlayerX = 325;
+            myPlayerY = 350;
             drawGame();
         }
 
