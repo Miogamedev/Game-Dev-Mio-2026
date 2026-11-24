@@ -1,1 +1,70 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a022-local-storage-Mio.html</title>
+</head>
+
+<body>
+
+    <h1>t2a022-local-storage by Mio</h1>
+
+    <h3>My To-Do List</h3>
+
+    <input type="text" id="myInput" placeholder="Enter a task">
+
+    <button onclick="addTask()">Add Task</button>
+
+    <ul id="myList"></ul>
+
+    <script>
+
+        // Load saved tasks
+        let myTasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+
+        // Show tasks
+        function showTasks() {
+            document.getElementById('myList').innerHTML = '';
+
+            for (let i = 0; i < myTasks.length; i++) {
+                let myLi = document.createElement('li');
+                myLi.innerHTML = myTasks[i];
+
+                let myButton = document.createElement('button');
+                myButton.innerHTML = 'Delete';
+
+                myButton.onclick = function() {
+                    myTasks.splice(i, 1);
+                    saveTasks();
+                };
+
+                myLi.appendChild(myButton);
+                document.getElementById('myList').appendChild(myLi);
+            }
+        }
+
+        // Add a task
+        function addTask() {
+            let myTask = document.getElementById('myInput').value;
+
+            if (myTask.trim() != '') {
+                myTasks.push(myTask);
+                document.getElementById('myInput').value = '';
+                saveTasks();
+            }
+        }
+
+        // Save tasks on the computer
+        function saveTasks() {
+            localStorage.setItem('myTasks', JSON.stringify(myTasks));
+            showTasks();
+        }
+
+        // Display saved tasks when page opens
+        showTasks();
+
+    </script>
+
+</body>
+</html>
+
