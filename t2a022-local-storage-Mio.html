@@ -3,6 +3,51 @@
 <html>
 <head>
     <title>t2a022-local-storage-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #00ffcc;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: yellow;
+        }
+
+        ul {
+            display: inline-block;
+            text-align: left;
+        }
+
+        li {
+            padding: 8px;
+            margin: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -11,7 +56,10 @@
 
     <h3>My To-Do List</h3>
 
-    <input type="text" id="myInput" placeholder="Enter a task">
+    <p>Tasks left: <span id="myCount">0</span></p>
+
+    <input type="text" id="myInput" placeholder="Enter a task"
+        onkeydown="if(event.key === 'Enter') addTask()">
 
     <button onclick="addTask()">Add Task</button>
 
@@ -27,11 +75,12 @@
             document.getElementById('myList').innerHTML = '';
 
             for (let i = 0; i < myTasks.length; i++) {
+
                 let myLi = document.createElement('li');
-                myLi.innerHTML = myTasks[i];
+                myLi.textContent = myTasks[i];
 
                 let myButton = document.createElement('button');
-                myButton.innerHTML = 'Delete';
+                myButton.textContent = 'Delete';
 
                 myButton.onclick = function() {
                     myTasks.splice(i, 1);
@@ -41,6 +90,9 @@
                 myLi.appendChild(myButton);
                 document.getElementById('myList').appendChild(myLi);
             }
+
+            // Update task counter
+            document.getElementById('myCount').innerHTML = myTasks.length;
         }
 
         // Add a task
@@ -67,4 +119,3 @@
 
 </body>
 </html>
-
