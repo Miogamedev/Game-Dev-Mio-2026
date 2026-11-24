@@ -58,8 +58,10 @@ function draw(){
     ctx.strokeStyle="white";ctx.lineWidth=3;
     ctx.beginPath();ctx.moveTo(0,370);ctx.lineTo(800,370);ctx.stroke();
 
-    // Hoop
-    ctx.fillStyle="white";ctx.fillRect(735,90,10,100);
+    // Hoop and backboard
+    ctx.fillStyle="white";
+    ctx.fillRect(735,90,10,100);
+
     ctx.strokeStyle="red";ctx.lineWidth=6;
     ctx.beginPath();ctx.moveTo(660,180);ctx.lineTo(740,180);ctx.stroke();
 
@@ -152,8 +154,22 @@ c.addEventListener("pointerup",()=>{
 function update(){
     if(playing&&(ball.vx||ball.vy)){
         let oldY=ball.y;
-        ball.x+=ball.vx;ball.y+=ball.vy;
-        ball.vy+=.25;ball.vx*=.995;
+        ball.x+=ball.vx;
+        ball.y+=ball.vy;
+        ball.vy+=.25;
+        ball.vx*=.995;
+
+        // Backboard collision
+        if(ball.x+16>=735 && ball.x<735 &&
+           ball.y+16>=90 && ball.y-16<=190 &&
+           ball.vx>0){
+
+            ball.x=719;
+            ball.vx=-Math.abs(ball.vx)*.8;
+
+            document.getElementById("message").textContent=
+                "🏀 BOING! Hit the backboard!";
+        }
 
         // Basket scored!
         if(oldY<180&&ball.y>=180&&ball.vy>0&&
@@ -186,8 +202,10 @@ function update(){
             ball.y=354;ball.vy*= -.6;ball.vx*=.8;
             if(Math.abs(ball.vy)<2)resetBall();
         }
+
         if(ball.x< -30||ball.x>830||ball.y>450)resetBall();
     }
+
     draw();
     requestAnimationFrame(update);
 }
