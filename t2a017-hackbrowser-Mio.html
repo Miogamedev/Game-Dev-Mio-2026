@@ -1,1 +1,186 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a017-hackbrowser-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        .box {
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 700px;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: yellow;
+        }
+
+        a {
+            color: cyan;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid cyan;
+            padding: 10px;
+        }
+
+        img {
+            width: 250px;
+            border: 3px solid cyan;
+            border-radius: 10px;
+        }
+
+        #result {
+            color: yellow;
+            font-size: 18px;
+            overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🔍 t2a017-hackbrowser by Mio</h1>
+
+<p>Explore the HTML behind a webpage!</p>
+
+<div class="box">
+
+    <h2>My HTML Elements</h2>
+
+    <!-- 1. Link -->
+    <a id="myLink" name="myLink"
+       href="https://www.google.com" target="_blank">
+       Visit Google
+    </a>
+
+    <br><br>
+
+    <!-- 2. Table -->
+    <table id="myTable" name="myTable">
+        <tr>
+            <th>Game</th>
+            <th>Type</th>
+        </tr>
+        <tr>
+            <td>Basketball</td>
+            <td>Sports</td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- 3. List -->
+    <ul id="myList" name="myList">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+    </ul>
+
+    <!-- 4. Bold text -->
+    <p>
+        This is <b id="myBold" name="myBold">important bold text</b>.
+    </p>
+
+    <!-- 5. Button -->
+    <button id="myButton" name="myButton"
+        onclick="alert('Hello from Mio!')">
+        Click Me
+    </button>
+
+</div>
+
+<div class="box">
+
+    <h2>My Image</h2>
+
+    <img id="myImage" name="myImage"
+         src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=600"
+         alt="Beautiful night sky">
+
+</div>
+
+<div class="box">
+
+    <h2>HTML Inspector</h2>
+
+    <p>Click buttons 14–18 to see behind the scenes!</p>
+
+    <button onclick="inspectElement('myLink')">
+        14. Inspect Link
+    </button>
+
+    <button onclick="inspectElement('myTable')">
+        15. Inspect Table
+    </button>
+
+    <button onclick="inspectElement('myList')">
+        16. Inspect List
+    </button>
+
+    <button onclick="inspectElement('myBold')">
+        17. Inspect Bold
+    </button>
+
+    <button onclick="inspectElement('myButton')">
+        18. Inspect Button
+    </button>
+
+    <p id="result">Your HTML information will appear here.</p>
+
+</div>
+
+<script>
+
+// Inspect HTML elements
+function inspectElement(myId) {
+
+    let myElement = document.getElementById(myId);
+
+    let myInfo = "";
+
+    myInfo += "ID: " + myElement.id + "<br>";
+    myInfo += "Name: " + myElement.getAttribute("name") + "<br>";
+    myInfo += "Tag: " + myElement.tagName + "<br>";
+    myInfo += "HTML: " + myElement.outerHTML;
+
+    document.getElementById("result").innerHTML = myInfo;
+}
+
+</script>
+
+</body>
+</html>
+
