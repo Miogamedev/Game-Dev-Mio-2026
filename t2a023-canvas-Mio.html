@@ -1,1 +1,112 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a23-canvas-Mio.html</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #101030;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: yellow;
+        }
+
+        canvas {
+            background: white;
+            border: 3px solid #00ffcc;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ffcc;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>t2a23-canvas by Mio</h2>
+
+    Click the button to draw basic shapes. Then try adding more!
+
+    <br><br>
+
+    <button onclick="drawShapes()">Draw Basic Shapes</button>
+    <button onclick="clearCanvas()">Clear Canvas</button>
+
+    <br><br>
+
+    <canvas id="myCoolTag" width="500" height="300"></canvas>
+
+    <script>
+
+        // Set up global variables
+        let myCanvas = document.getElementById('myCoolTag');
+        let myContext = myCanvas.getContext('2d');
+
+        // Draw basic shapes
+        function drawShapes() {
+
+            // Clear canvas first
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+            // 1. Draw a simple line
+            myContext.beginPath();
+            myContext.lineWidth = 3;
+            myContext.strokeStyle = 'black';
+            myContext.moveTo(20, 20);
+            myContext.lineTo(150, 20);
+            myContext.stroke();
+
+            // 2. Draw a rectangle
+            myContext.fillStyle = 'blue';
+            myContext.fillRect(30, 50, 100, 60);
+
+            // 3. Draw a circle
+            myContext.beginPath();
+            myContext.lineWidth = 5;
+            myContext.strokeStyle = 'green';
+            myContext.arc(220, 80, 40, 0, 2 * Math.PI);
+            myContext.stroke();
+
+            // 4. Write some text
+            myContext.fillStyle = 'red';
+            myContext.font = '24px Arial';
+            myContext.fillText('Hello World!', 30, 180);
+
+            // 5. Draw an extra star
+            myContext.fillStyle = 'orange';
+            myContext.font = '40px Arial';
+            myContext.fillText('★', 250, 190);
+        }
+
+        // Clear the canvas
+        function clearCanvas() {
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        }
+
+    </script>
+
+</body>
+</html>
+
