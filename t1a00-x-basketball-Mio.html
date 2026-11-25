@@ -279,29 +279,6 @@ function update(){
                 "🏀 BOING! Hit the backboard!";
         }
 
-        // Rim collision - left side
-        if(Math.hypot(ball.x-660,ball.y-180)<20 &&
-           ball.vx>0){
-
-            ball.vx=-Math.abs(ball.vx)*.8;
-            ball.vy=-Math.abs(ball.vy)*.5;
-        }
-
-        // Rim collision - right side
-        if(Math.hypot(ball.x-740,ball.y-180)<20 &&
-           ball.vx<0){
-
-            ball.vx=Math.abs(ball.vx)*.8;
-            ball.vy=-Math.abs(ball.vy)*.5;
-        }
-
-        // Rim collision - top
-        if(ball.x>660 && ball.x<740 &&
-           Math.abs(ball.y-180)<16){
-
-            ball.vy=-Math.abs(ball.vy)*.7;
-        }
-
         // Basket scored
         if(oldY<180 && ball.y>=180 &&
            ball.vy>0 && ball.x>660 && ball.x<740){
