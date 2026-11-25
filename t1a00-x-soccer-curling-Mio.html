@@ -12,9 +12,7 @@ body {
     text-align: center;
 }
 
-h1 {
-    color: #00ffcc;
-}
+h1 { color: #00ffcc; }
 
 canvas {
     width: 95%;
@@ -44,7 +42,7 @@ button {
 <h3>
 Score: <span id="score">0</span> |
 Best: <span id="best">0</span> |
-Level: <span id="level">1</span>
+Level: <span id="level">1</span>/10
 </h3>
 
 <canvas id="game" width="800" height="450"></canvas>
@@ -57,14 +55,12 @@ Level: <span id="level">1</span>
 <p>Drag backwards to aim and curl the ball around obstacles!</p>
 
 <script>
-
 const c = document.getElementById("game");
 const ctx = c.getContext("2d");
 
 let score = 0;
 let level = 1;
 let best = Number(localStorage.getItem("soccerBest")) || 0;
-
 let playing = false;
 let dragging = false;
 let dx = 120;
@@ -72,45 +68,25 @@ let dy = 350;
 let resetFrames = 0;
 
 let ball = {
-    x:120,
-    y:350,
-    vx:0,
-    vy:0,
-    spin:0
+    x:120, y:350, vx:0, vy:0, spin:0
 };
 
-// Obstacles change with each level
+// Ten different obstacle layouts
 function getObstacles() {
-
-    if(level === 1) return [];
-
-    if(level === 2) {
-        return [
-            {x:420,y:240,r:25}
-        ];
-    }
-
-    if(level === 3) {
-        return [
-            {x:350,y:270,r:25},
-            {x:520,y:180,r:25}
-        ];
-    }
-
-    if(level === 4) {
-        return [
-            {x:300,y:180,r:25},
-            {x:440,y:280,r:25},
-            {x:570,y:190,r:25}
-        ];
-    }
-
-    return [
-        {x:300,y:260,r:27},
-        {x:420,y:150,r:27},
-        {x:530,y:280,r:27},
-        {x:620,y:190,r:27}
+    const levels = [
+        [],
+        [{x:420,y:240,r:25}],
+        [{x:350,y:270,r:25},{x:520,y:180,r:25}],
+        [{x:300,y:180,r:25},{x:440,y:280,r:25},{x:570,y:190,r:25}],
+        [{x:280,y:300,r:27},{x:390,y:160,r:27},{x:510,y:270,r:27}],
+        [{x:300,y:220,r:28},{x:430,y:120,r:28},{x:540,y:330,r:28}],
+        [{x:270,y:150,r:25},{x:390,y:300,r:25},{x:510,y:150,r:25},{x:620,y:300,r:25}],
+        [{x:300,y:330,r:28},{x:390,y:210,r:28},{x:500,y:100,r:28},{x:600,y:260,r:28}],
+        [{x:270,y:250,r:28},{x:370,y:120,r:28},{x:470,y:320,r:28},{x:570,y:170,r:28}],
+        [{x:260,y:130,r:28},{x:350,y:300,r:28},{x:450,y:170,r:28},{x:550,y:320,r:28},{x:640,y:150,r:28}]
     ];
+
+    return levels[level-1].map(o => ({...o}));
 }
 
 let obstacles = getObstacles();
@@ -119,14 +95,11 @@ document.getElementById("best").textContent = best;
 
 // Draw game
 function draw() {
-
     ctx.clearRect(0,0,800,450);
 
-    // Grass
     ctx.fillStyle = "#268c45";
     ctx.fillRect(0,0,800,450);
 
-    // Field
     ctx.strokeStyle = "white";
     ctx.lineWidth = 3;
     ctx.strokeRect(20,20,760,410);
@@ -148,9 +121,7 @@ function draw() {
     ctx.lineWidth = 5;
     ctx.strokeRect(685,145,100,180);
 
-    // Net
     ctx.lineWidth = 1;
-
     for(let y=160;y<325;y+=20) {
         ctx.beginPath();
         ctx.moveTo(700,y);
@@ -159,8 +130,7 @@ function draw() {
     }
 
     // Obstacles
-    obstacles.forEach(o=>{
-
+    obstacles.forEach(o => {
         ctx.fillStyle = "#222222";
         ctx.beginPath();
         ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
@@ -174,31 +144,26 @@ function draw() {
         ctx.font = "20px Arial";
         ctx.textAlign = "center";
         ctx.fillText("X",o.x,o.y+7);
-
     });
 
     ctx.textAlign = "left";
 
-    // Aiming prediction
+    // Predicted aiming line
     if(dragging) {
-
-        let shot = getShot();
-        let path = predict(shot);
+        let path = predict(getShot());
 
         ctx.strokeStyle = "yellow";
         ctx.lineWidth = 3;
         ctx.setLineDash([8,8]);
-
         ctx.beginPath();
 
-        path.forEach((p,i)=>{
+        path.forEach((p,i) => {
             if(i===0) ctx.moveTo(p.x,p.y);
             else ctx.lineTo(p.x,p.y);
         });
 
         ctx.stroke();
         ctx.setLineDash([]);
-
     }
 
     // Soccer ball
@@ -214,18 +179,13 @@ function draw() {
     ctx.fillStyle = "black";
     ctx.beginPath();
     ctx.arc(ball.x,ball.y,5,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.beginPath();
     ctx.arc(ball.x-7,ball.y-7,3,0,Math.PI*2);
     ctx.arc(ball.x+7,ball.y+7,3,0,Math.PI*2);
     ctx.fill();
-
 }
 
 // Calculate shot
 function getShot() {
-
     return {
         vx:Math.max(3,Math.min(18,(ball.x-dx)*0.22)),
         vy:Math.max(-14,Math.min(14,(ball.y-dy)*0.22)),
@@ -233,9 +193,8 @@ function getShot() {
     };
 }
 
-// Simulate ball movement
+// Move ball
 function moveBall(b) {
-
     let ax = -b.vy*b.spin*0.08;
     let ay = b.vx*b.spin*0.08;
 
@@ -248,15 +207,13 @@ function moveBall(b) {
     b.y += b.vy;
 
     // Obstacle collisions
-    obstacles.forEach(o=>{
-
+    obstacles.forEach(o => {
         let ox = b.x-o.x;
         let oy = b.y-o.y;
         let distance = Math.hypot(ox,oy);
         let minimum = o.r+14;
 
         if(distance<minimum) {
-
             let nx = ox/(distance||1);
             let ny = oy/(distance||1);
 
@@ -273,7 +230,6 @@ function moveBall(b) {
             b.vx *= 0.65;
             b.vy *= 0.65;
         }
-
     });
 
     // Side walls
@@ -292,34 +248,26 @@ function moveBall(b) {
 
 // Predict aiming line
 function predict(shot) {
-
     let b = {
-        x:ball.x,
-        y:ball.y,
-        vx:shot.vx,
-        vy:shot.vy,
+        x:ball.x, y:ball.y,
+        vx:shot.vx, vy:shot.vy,
         spin:shot.spin
     };
 
     let path = [];
 
     for(let i=0;i<100;i++) {
-
         path.push({x:b.x,y:b.y});
+        moveBall(b);
 
-        let oldX = moveBall(b);
-
-        if(b.x>=685) break;
-
-        if(b.x>790 || b.x<10) break;
+        if(b.x>=685 || b.x>790 || b.x<10) break;
     }
 
     return path;
 }
 
-// Start game
+// Start or restart game
 function startGame() {
-
     score=0;
     level=1;
     playing=true;
@@ -327,7 +275,6 @@ function startGame() {
     resetFrames=0;
 
     obstacles=getObstacles();
-
     resetBall();
     updateText();
 
@@ -339,13 +286,9 @@ function startGame() {
 
 // Reset ball
 function resetBall() {
-
     ball={
-        x:120,
-        y:350,
-        vx:0,
-        vy:0,
-        spin:0
+        x:120, y:350,
+        vx:0, vy:0, spin:0
     };
 
     dragging=false;
@@ -353,7 +296,6 @@ function resetBall() {
 
 // Update scoreboard
 function updateText() {
-
     document.getElementById("score").textContent=score;
     document.getElementById("best").textContent=best;
     document.getElementById("level").textContent=level;
@@ -361,7 +303,6 @@ function updateText() {
 
 // Mouse and touch position
 function position(e) {
-
     let r=c.getBoundingClientRect();
 
     return {
@@ -371,38 +312,31 @@ function position(e) {
 }
 
 // Start aiming
-c.addEventListener("pointerdown",e=>{
-
+c.addEventListener("pointerdown",e => {
     if(!playing || ball.vx!==0 || ball.vy!==0 || resetFrames>0) return;
 
     let p=position(e);
 
     if(Math.hypot(p.x-ball.x,p.y-ball.y)<35) {
-
         dragging=true;
         dx=p.x;
         dy=p.y;
-
         c.setPointerCapture(e.pointerId);
     }
 });
 
 // Move aiming line
-c.addEventListener("pointermove",e=>{
-
+c.addEventListener("pointermove",e => {
     if(!dragging) return;
 
     let p=position(e);
-
     dx=p.x;
     dy=p.y;
-
     draw();
 });
 
 // Shoot
-c.addEventListener("pointerup",()=>{
-
+c.addEventListener("pointerup",() => {
     if(!dragging) return;
 
     let shot=getShot();
@@ -415,16 +349,12 @@ c.addEventListener("pointerup",()=>{
 
     document.getElementById("message").textContent =
         "⚽ Curl it around the obstacles!";
-
 });
 
 // Game loop
 function update() {
-
     if(playing) {
-
         if(resetFrames>0) {
-
             resetFrames--;
 
             if(resetFrames===0) {
@@ -432,9 +362,8 @@ function update() {
                 document.getElementById("message").textContent =
                     "Level "+level+": Aim for the goal!";
             }
-
-        } else if(ball.vx!==0 || ball.vy!==0) {
-
+        }
+        else if(ball.vx!==0 || ball.vy!==0) {
             let oldX=moveBall(ball);
 
             // Goal detection
@@ -448,19 +377,26 @@ function update() {
                     localStorage.setItem("soccerBest",best);
                 }
 
-                level++;
+                // Finish after Level 10
+                if(level===10) {
+                    playing=false;
+                    updateText();
 
-                obstacles=getObstacles();
+                    document.getElementById("message").textContent =
+                        "🏆 YOU BEAT ALL 10 LEVELS! Final score: "+score;
+                }
+                else {
+                    level++;
+                    obstacles=getObstacles();
+                    updateText();
 
-                updateText();
+                    document.getElementById("message").textContent =
+                        "🥅 GOAL! Welcome to Level "+level+"!";
 
-                document.getElementById("message").textContent =
-                    "🥅 GOAL! Welcome to Level "+level+"!";
-
-                ball.vx=0;
-                ball.vy=0;
-
-                resetFrames=60;
+                    ball.vx=0;
+                    ball.vy=0;
+                    resetFrames=60;
+                }
             }
 
             // Missed goal
@@ -472,22 +408,17 @@ function update() {
 
                 ball.vx=0;
                 ball.vy=0;
-
                 resetFrames=60;
             }
-
         }
     }
 
     draw();
-
     requestAnimationFrame(update);
 }
 
 update();
-
 </script>
 
 </body>
 </html>
-
