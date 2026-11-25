@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +8,12 @@
         body {
             font-family: Arial;
             text-align: center;
+            background-color: lightblue;
         }
 
         #myCanvas {
-            background-color: lightblue;
-            border: 1px solid black;
+            background-color: white;
+            border: 2px solid black;
         }
     </style>
 </head>
@@ -30,66 +31,30 @@
         <button onclick="startGame()">Start Template</button>
     </p>
 
-    <p>Use the arrow keys to move your spaceship.</p>
-
     <script>
         // Get the canvas
         let myCanvas = document.getElementById('myCanvas');
         let myContext = myCanvas.getContext('2d');
 
         // Game variables
-        let myPlayerX = 325;
-        let myPlayerY = 350;
         let myScore = 0;
-        let myGameRunning = false;
 
-        // Draw the player
+        // Draw the canvas
         function drawGame() {
             myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
-            // Player spaceship
-            myContext.font = "40px Arial";
-            myContext.fillText("🚀", myPlayerX, myPlayerY);
+            myContext.font = "25px Arial";
+            myContext.fillStyle = "black";
+            myContext.fillText("My Game Template", 250, 200);
 
-            // Display score
             document.getElementById('myScore').innerHTML = myScore;
         }
 
         // Start the template
         function startGame() {
-            myGameRunning = true;
             myScore = 0;
-            myPlayerX = 325;
-            myPlayerY = 350;
             drawGame();
         }
-
-        // Move player with arrow keys
-        document.addEventListener('keydown', function(event) {
-            if (!myGameRunning) return;
-
-            if (event.key === "ArrowLeft") {
-                myPlayerX -= 15;
-            }
-
-            if (event.key === "ArrowRight") {
-                myPlayerX += 15;
-            }
-
-            if (event.key === "ArrowUp") {
-                myPlayerY -= 15;
-            }
-
-            if (event.key === "ArrowDown") {
-                myPlayerY += 15;
-            }
-
-            // Keep player inside canvas
-            myPlayerX = Math.max(0, Math.min(650, myPlayerX));
-            myPlayerY = Math.max(40, Math.min(450, myPlayerY));
-
-            drawGame();
-        });
 
         // Draw starting screen
         drawGame();
@@ -97,4 +62,3 @@
 
 </body>
 </html>
-```
