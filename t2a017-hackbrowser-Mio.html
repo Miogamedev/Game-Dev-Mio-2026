@@ -1,37 +1,65 @@
-
+```html
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>t2a017-hackbrowser-Mio.html</title>
+    <title>t2a17-hackbrowser-Mio.html</title>
 
     <style>
         body {
+            background: linear-gradient(135deg, #101030, #003344);
+            color: white;
             font-family: Arial;
             text-align: center;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
         }
 
         .box {
-            border: 1px solid black;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 700px;
+            background: #202044;
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 0 12px #00ffcc;
         }
 
-        table {
-            margin: auto;
-            border-collapse: collapse;
+        button {
+            background: #00ffcc;
+            color: #101030;
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        td, th {
-            border: 1px solid black;
-            padding: 10px;
+        button:hover {
+            background: #66ff66;
+            box-shadow: 0 0 10px #66ff66;
         }
 
         img {
-            width: 250px;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 12px;
+            border: 2px solid #00ffcc;
         }
 
-        #result {
+        #myOutput {
+            background: #101030;
+            color: #00ffcc;
+            padding: 20px;
+            border: 1px solid #00ffcc;
+            border-radius: 10px;
+            margin-top: 15px;
+            min-height: 40px;
             overflow-wrap: anywhere;
         }
     </style>
@@ -39,113 +67,114 @@
 
 <body>
 
-<h1>t2a017-hackbrowser by Mio</h1>
+    <h6>Version 0.0.1</h6>
 
-<p>Explore the HTML behind a webpage!</p>
+    <h1>Browser Hack by Mio</h1>
+    <h2>T2A17 Hackbrowser</h2>
 
-<div class="box">
+    <div class="box">
 
-    <h2>My HTML Elements</h2>
+        <h2>About This Assignment</h2>
 
-    <!-- 1. Link -->
-    <a id="myLink" name="myLink"
-       href="https://www.google.com" target="_blank">
-       Visit Google
-    </a>
+        <p>
+            Click the buttons to explore different browser
+            objects, properties and information!
+        </p>
 
-    <br><br>
+        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1000"
+        alt="Sports car">
 
-    <!-- 2. Table -->
-    <table id="myTable" name="myTable">
-        <tr>
-            <th>Game</th>
-            <th>Type</th>
-        </tr>
-        <tr>
-            <td>Basketball</td>
-            <td>Sports</td>
-        </tr>
-    </table>
+    </div>
 
-    <br>
+    <div class="box">
 
-    <!-- 3. List -->
-    <ul id="myList" name="myList">
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-    </ul>
+        <h2>First 15 Buttons</h2>
 
-    <!-- 4. Bold -->
-    <p>
-        This is <b id="myBold" name="myBold">important bold text</b>.
-    </p>
+        <button onclick="showInfo(navigator.appName)">1. Browser Name</button>
 
-    <!-- 5. Button -->
-    <button id="myButton" name="myButton"
-        onclick="alert('Hello from Mio!')">
-        Click Me
-    </button>
+        <button onclick="showInfo(navigator.appVersion)">2. Browser Version</button>
 
-</div>
+        <button onclick="showInfo(location.href)">3. Website Address</button>
 
-<div class="box">
+        <button onclick="showInfo(document.title)">4. Page Title</button>
 
-    <h2>My Image</h2>
+        <button onclick="showInfo(screen.width)">5. Screen Width</button>
 
-    <img id="myImage" name="myImage"
-         src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=600"
-         alt="Night sky">
+        <button onclick="showInfo(screen.height)">6. Screen Height</button>
 
-</div>
+        <button onclick="showInfo(navigator.language)">7. Language</button>
 
-<div class="box">
+        <button onclick="showInfo(navigator.cookieEnabled)">8. Cookies</button>
 
-    <h2>HTML Inspector</h2>
+        <button onclick="showInfo(navigator.onLine)">9. Internet Connection</button>
 
-    <p>Click buttons 14–18 to inspect the HTML elements.</p>
+        <button onclick="showInfo(navigator.platform)">10. Platform</button>
 
-    <button onclick="inspectElement('myLink')">
-        14. Inspect Link
-    </button>
+        <button onclick="showInfo(new Date())">11. Current Date</button>
 
-    <button onclick="inspectElement('myTable')">
-        15. Inspect Table
-    </button>
+        <button onclick="showInfo(window.innerWidth)">12. Window Width</button>
 
-    <button onclick="inspectElement('myList')">
-        16. Inspect List
-    </button>
+        <button onclick="showInfo(window.innerHeight)">13. Window Height</button>
 
-    <button onclick="inspectElement('myBold')">
-        17. Inspect Bold
-    </button>
+        <button onclick="showInfo(location.pathname)">14. Page Path</button>
 
-    <button onclick="inspectElement('myButton')">
-        18. Inspect Button
-    </button>
+        <button onclick="showInfo(navigator.userAgent)">15. Browser Information</button>
 
-    <p id="result">HTML information appears here.</p>
+    </div>
 
-</div>
+    <div class="box">
 
-<script>
+        <h2>Last 5 Buttons</h2>
 
-function inspectElement(myId) {
+        <button onclick="showInfo('History length: ' + history.length)">16. History</button>
 
-    let myElement = document.getElementById(myId);
+        <button onclick="showInfo('Screen color depth: ' + screen.colorDepth)">17. Screen Info</button>
 
-    let myInfo = "";
+        <button onclick="showInfo('Page size: ' + document.documentElement.outerHTML.length + ' characters')">18. Page Info</button>
 
-    myInfo += "ID: " + myElement.id + "<br>";
-    myInfo += "Name: " + myElement.getAttribute("name") + "<br>";
-    myInfo += "Tag: " + myElement.tagName + "<br>";
-    myInfo += "HTML: " + myElement.outerHTML;
+        <button onclick="showInfo('Local storage available: ' + (typeof(Storage) !== 'undefined'))">19. Storage</button>
 
-    document.getElementById("result").innerHTML = myInfo;
-}
+        <button onclick="location.reload()">20. Refresh Browser</button>
 
-</script>
+    </div>
+
+    <div class="box">
+
+        <h2>Browser Results</h2>
+
+        <div id="myOutput">
+            Click a button to see information here!
+        </div>
+
+    </div>
+
+    <div class="box">
+
+        <h2>Extra Button</h2>
+
+        <button onclick="showInfo('Hello from Mio! You found the extra button!')">
+            Click for a Surprise!
+        </button>
+
+        <br><br>
+
+        <button onclick="location.reload()">Refresh Page</button>
+
+    </div>
+
+    <h6>End of T2A17 Hackbrowser by Mio</h6>
+
+    <script>
+
+        // Show information on the webpage
+        function showInfo(myText) {
+
+            document.getElementById('myOutput').innerHTML = myText;
+
+        }
+
+    </script>
 
 </body>
 </html>
+```
